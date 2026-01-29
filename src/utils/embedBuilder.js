@@ -14,45 +14,38 @@ export function createSubmissionEmbed() {
     .setColor(COLORS.CYAN)
     .setTitle('━━━━━━━ Achievement Submission ━━━━━━━')
     .setDescription(
-      '```ansi\n' +
-      '\x1b[36m╔═════════════════════════════════╗\n' +
-      '\x1b[36m║  ALL ACCORDING TO KEIKAKU       ║\n' +
-      '\x1b[36m╚═════════════════════════════════╝\x1b[0m\n' +
-      '```\n' +
-      '**HOW IT WORKS**\n' +
-      '```\n' +
-      '1 → Click the button below\n' +
-      '2 → Select your game\n' +
-      '3 → Choose an achievement\n' +
-      '4 → Upload proof in the private thread\n' +
-      '5 → Wait for verification\n' +
-      '```\n' +
-      '**THE RULES**\n' +
-      '```diff\n' +
-      '+ Maximum 3 pending submissions\n' +
-      '+ Complete 100% of tier to unlock next\n' +
-      '+ Tier 9 requires live trial with admins\n' +
-      '- Tier 10 is reserved for Game Masters\n' +
-      '```\n'
+      'Submit proof of your achievements and progress through 10 tiers.\n\u200b'
     )
     .addFields(
       {
-        name: '💎 Cross-Server Progress',
-        value: '> Your achievements follow you everywhere',
-        inline: true
+        name: '📝 Submission Process',
+        value: 
+          '**1.** Click the button below\n' +
+          '**2.** Select your game from the list\n' +
+          '**3.** Choose an available achievement\n' +
+          '**4.** Upload proof screenshots in private thread\n' +
+          '**5.** Await verification from staff\n\u200b',
+        inline: false
       },
       {
-        name: '🪙 Token Economy',
-        value: '> Earn tokens for each completion',
-        inline: true
+        name: '⚔️ Tier System',
+        value: 
+          '**Tiers 1-8:** Complete all achievements to unlock next tier\n' +
+          '**Tier 9:** Live challenge trial with admins (requires tokens)\n' +
+          '**Tier 10:** Exclusive rank granted by administrators\n\u200b',
+        inline: false
       },
       {
-        name: '🏆 Global Ranks',
-        value: '> Compete with the best',
-        inline: true
+        name: '⚡ Important',
+        value: 
+          '• Maximum **3 pending** submissions at once\n' +
+          '• Progress is **cross-server** (follows you everywhere)\n' +
+          '• Tier 9 denials have a **72-hour cooldown**\n' +
+          '• Each achievement awards **game-specific tokens**',
+        inline: false
       }
     )
-    .setFooter({ text: '『  』 • Blank' })
+    .setFooter({ text: '『  』 • Ready to begin?' })
     .setTimestamp();
 
   const button = new ButtonBuilder()
@@ -89,14 +82,8 @@ export function createAnnouncementEmbed(user, achievement, totalTokens, gameName
       name: `${user.username} completed a challenge`,
       iconURL: user.displayAvatarURL()
     })
-    .setTitle('━━━━━━━ ACHIEVEMENT UNLOCKED ━━━━━━━')
-    .setDescription(
-      '```ansi\n' +
-      '\x1b[35m╔═════════════════════════════════╗\n' +
-      '\x1b[35m║     VICTORY IS ABSOLUTE         ║\n' +
-      '\x1b[35m╚═════════════════════════════════╝\x1b[0m\n' +
-      '```'
-    )
+    .setTitle('━━━━━━━ Achievement Unlocked ━━━━━━━')
+    .setDescription('\u200b')
     .addFields(
       {
         name: '🎮 Game',
@@ -114,18 +101,18 @@ export function createAnnouncementEmbed(user, achievement, totalTokens, gameName
         inline: true
       },
       {
-        name: '🪙 Reward',
+        name: '🪙 Tokens Earned',
         value: `\`\`\`+${achievement.tokenReward}\`\`\``,
         inline: true
       },
       {
-        name: '💎 Total',
+        name: '💎 Total Tokens',
         value: `\`\`\`${totalTokens}\`\`\``,
         inline: true
       },
       {
         name: '🔥 Status',
-        value: `\`\`\`Complete\`\`\``,
+        value: `\`\`\`Completed\`\`\``,
         inline: true
       }
     )
@@ -138,14 +125,7 @@ export function createConfigEmbed(config) {
   return new EmbedBuilder()
     .setColor(COLORS.CYAN)
     .setTitle('━━━━━━━ Server Configuration ━━━━━━━')
-    .setDescription(
-      '```ansi\n' +
-      '\x1b[36m╔═════════════════════════════════╗\n' +
-      '\x1b[36m║    MASTER THE SYSTEM            ║\n' +
-      '\x1b[36m╚═════════════════════════════════╝\x1b[0m\n' +
-      '```\n' +
-      '**Current Settings**\n\u200b'
-    )
+    .setDescription('**Current Settings**\n\u200b')
     .addFields(
       {
         name: '📋 Submission Channel',
@@ -198,14 +178,7 @@ export function createProfileEmbed(user, allProgress) {
       iconURL: user.displayAvatarURL()
     })
     .setTitle('━━━━━━━ Player Statistics ━━━━━━━')
-    .setDescription(
-      '```ansi\n' +
-      '\x1b[35m╔═════════════════════════════════╗\n' +
-      '\x1b[35m║    KNOWLEDGE IS POWER           ║\n' +
-      '\x1b[35m╚═════════════════════════════════╝\x1b[0m\n' +
-      '```\n' +
-      `**Active Games:** ${allProgress.length}\n\u200b`
-    )
+    .setDescription(`**Active Games:** ${allProgress.length}\n\u200b`)
     .setThumbnail(user.displayAvatarURL({ size: 256 }));
 
   if (allProgress.length === 0) {
@@ -213,6 +186,20 @@ export function createProfileEmbed(user, allProgress) {
       name: '🎯 Getting Started',
       value: '```diff\n- No games in progress\n+ Submit your first achievement to begin\n```'
     });
+  } else {
+    for (const prog of allProgress) {
+      const tierBar = '▰'.repeat(prog.current_tier) + '▱'.repeat(10 - prog.current_tier);
+      const percentage = (prog.current_tier / 10) * 100;
+      
+      embed.addFields({
+        name: `🎮 ${prog.game_name}`,
+        value: 
+          `**Tier:** ${prog.current_tier}/10 (${percentage}%)\n` +
+          `${tierBar}\n` +
+          `**Tokens:** ${prog.tokens} 🪙`,
+        inline: true
+      });
+    }
   }
 
   embed.setFooter({ text: '『  』 • Select a game for details' })
@@ -226,11 +213,8 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
     .setColor(COLORS.PURPLE)
     .setTitle(`━━━━━━━ ${game.displayName} ━━━━━━━`)
     .setDescription(
-      '```ansi\n' +
-      '\x1b[35m╔═════════════════════════════════╗\n' +
-      `\x1b[35m║  TIER ${progress.current_tier}/10 • ${progress.tokens} TOKENS 🪙       ║\n` +
-      '\x1b[35m╚═════════════════════════════════╝\x1b[0m\n' +
-      '```'
+      `**Current Tier:** ${progress.current_tier}/10\n` +
+      `**Tokens:** ${progress.tokens} 🪙\n\u200b`
     )
     .setThumbnail(user.displayAvatarURL());
 
@@ -255,7 +239,6 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
         status = ' *[Locked]*';
       } else if (ach.userStatus === 'approved') {
         icon = '✅';
-        status = '';
       } else if (ach.userStatus === 'pending') {
         icon = '⏳';
         status = ' *[Pending]*';
@@ -285,18 +268,45 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
   return embed;
 }
 
-export function createAchievementListEmbed(game, progress) {
+export function createAchievementListEmbed(game, progress, achievements) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.CYAN)
     .setTitle(`━━━━━━━ ${game.displayName} ━━━━━━━`)
     .setDescription(
-      '```ansi\n' +
-      '\x1b[36m╔═════════════════════════════════╗\n' +
-      `\x1b[36m║  YOUR TIER: ${progress.current_tier}/10               ║\n` +
-      `\x1b[36m║  TOKENS: ${progress.tokens} 🪙                   ║\n` +
-      '\x1b[36m╚═════════════════════════════════╝\x1b[0m\n' +
-      '```\n\u200b'
+      `**Your Tier:** ${progress.current_tier}/10\n` +
+      `**Tokens:** ${progress.tokens} 🪙\n\u200b`
     );
+
+  for (let tier = 1; tier <= 8; tier++) {
+    const tierAchs = achievements.filter(a => a.tier === tier);
+    if (tierAchs.length === 0) continue;
+
+    let tierText = '';
+    for (const ach of tierAchs) {
+      let statusEmoji = '⭕';
+      if (ach.locked) statusEmoji = '🔒';
+      else if (ach.userStatus === 'approved') statusEmoji = '✅';
+      else if (ach.userStatus === 'pending') statusEmoji = '⏳';
+      else if (ach.userStatus === 'rejected') statusEmoji = '❌';
+
+      tierText += `${statusEmoji} **${ach.name}** - ${ach.tokenReward} 🪙\n`;
+      if (ach.locked) {
+        tierText += `   └ *Complete Tier ${tier - 1} to unlock*\n`;
+      } else {
+        tierText += `   └ ${ach.description}\n`;
+      }
+      tierText += '\n';
+    }
+
+    embed.addFields({
+      name: `━━━ Tier ${tier} ━━━`,
+      value: tierText || 'No achievements',
+      inline: false
+    });
+  }
+
+  embed.setFooter({ text: '『  』' })
+    .setTimestamp();
 
   return embed;
 }
@@ -328,7 +338,7 @@ export function createRoleSelectEmbed(type) {
 
   const descriptions = {
     verifier: 'Select the role that can verify **Tier 1-8** achievements.\n\n**Permissions:**\n• View verification threads\n• Approve or deny submissions\n• Award tokens to players',
-    admin: 'Select the role that can verify **Tier 9+** challenges.\n\n**Permissions:**\n• Conduct Tier 9 live trials\n• Grant Tier 10 (Game Master) status\n• Override all verifications'
+    admin: 'Select the role that can verify **Tier 9+** challenges.\n\n**Permissions:**\n• Conduct Tier 9 live trials\n• Grant Tier 10 status\n• Override all verifications'
   };
 
   return new EmbedBuilder()
@@ -344,7 +354,7 @@ export function createSuccessEmbed(type, target) {
     submission_channel: `The submission button has been posted in ${target}\n\nPlayers can now begin their conquest.`,
     announcement_channel: `Achievement announcements will now be posted in ${target}`,
     verifier_role: `${target} can now verify **Tier 1-8** achievements`,
-    admin_role: `${target} can now verify **Tier 9+** challenges and grant Game Master status`
+    admin_role: `${target} can now verify **Tier 9+** challenges and grant Tier 10 status`
   };
 
   return new EmbedBuilder()
