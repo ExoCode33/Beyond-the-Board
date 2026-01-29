@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Collection, Events, ActionRowBuilder, StringSelectMenuBuilder, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionFlagsBits, REST, Routes } from 'discord.js';
+import { Client, GatewayIntentBits, Collection, Events, ActionRowBuilder, StringSelectMenuBuilder, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionFlagsBits, REST, Routes, ChannelSelectMenuBuilder, RoleSelectMenuBuilder, EmbedBuilder } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -69,6 +69,100 @@ async function deployCommands() {
   }
 }
 
+// Show config panel
+async function showConfigPanel(interaction, isUpdate = false) {
+  const config = await ServerModel.findByGuildId(interaction.guildId);
+
+  const embed = new EmbedBuilder()
+    .setColor('#00FFFF')
+    .setTitle('🎮 Beyond the Board - Configuration Panel')
+    .setDescription('**Current Server Configuration**\n\u200b')
+    .addFields(
+      {
+        name: '📋 Submission Channel',
+        value: config?.submission_channel_id ? `<#${config.submission_channel_id}>` : '`Not configured`',
+        inline: true
+      },
+      {
+        name: '📢 Announcement Channel',
+        value: config?.announcement_channel_id ? `<#${config.announcement_channel_id}>` : '`Not configured`',
+        inline: true
+      },
+      {
+        name: '\u200b',
+        value: '\u200b',
+        inline: true
+      },
+      {
+        name: '👥 Verifier Role',
+        value: config?.verifier_role_id ? `<@&${config.verifier_role_id}>` : '`Not configured`',
+        inline: true
+      },
+      {
+        name: '⭐ Admin Role',
+        value: config?.admin_role_id ? `<@&${config.admin_role_id}>` : '`Not configured`',
+        inline: true
+      },
+      {
+        name: '\u200b',
+        value: '\u200b',
+        inline: true
+      }
+    )
+    .setFooter({ text: 'Select an action below to configure the bot' })
+    .setTimestamp();
+
+  const selectMenu = new StringSelectMenuBuilder()
+    .setCustomId('admin_config_action')
+    .setPlaceholder('⚙️ Select Configuration Action')
+    .addOptions([
+      {
+        label: 'Setup Submission Embed',
+        description: 'Post the achievement submission button',
+        value: 'setup_embed',
+        emoji: '📋'
+      },
+      {
+        label: 'Set Announcement Channel',
+        description: 'Configure where achievements are announced',
+        value: 'set_announcement_channel',
+        emoji: '📢'
+      },
+      {
+        label: 'Set Verifier Role',
+        description: 'Role that can verify Tier 1-8 achievements',
+        value: 'set_verifier_role',
+        emoji: '👥'
+      },
+      {
+        label: 'Set Admin Role',
+        description: 'Role that can verify Tier 9+ challenges',
+        value: 'set_admin_role',
+        emoji: '⭐'
+      },
+      {
+        label: 'View Current Configuration',
+        description: 'Refresh and view current settings',
+        value: 'refresh_config',
+        emoji: '🔄'
+      }
+    ]);
+
+  const row = new ActionRowBuilder().addComponents(selectMenu);
+
+  if (isUpdate) {
+    await interaction.editReply({
+      embeds: [embed],
+      components: [row]
+    });
+  } else {
+    await interaction.editReply({
+      embeds: [embed],
+      components: [row]
+    });
+  }
+}
+
 // Ready event
 client.once(Events.ClientReady, async () => {
   console.log(`✅ Bot ready! Logged in as ${client.user.tag}`);
@@ -120,6 +214,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 
     try {
+      // Special handling for config command
+      if (interaction.commandName === 'config-beyondtheboard') {
+        await interaction.deferReply({ ephemeral: true });
+        await showConfigPanel(interaction);
+        return;
+      }
+      
       await command.execute(interaction);
     } catch (error) {
       console.error(`Error executing ${interaction.commandName}:`, error);
@@ -130,6 +231,175 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await interaction.reply(msg);
       }
     }
+    return;
+  }
+
+  // Config panel - action selection
+  if (interaction.isStringSelectMenu() && interaction.customId === 'admin_config_action') {
+    const action = interaction.values[0];
+
+    if (action === 'refresh_config') {
+      await interaction.deferUpdate();
+      await showConfigPanel(interaction, true);
+      return;
+    }
+
+    if (action === 'setup_embed') {
+      await interaction.deferUpdate();
+      
+      const msg = await interaction.channel.send(createSubmissionEmbed());
+      await ServerModel.upsert(interaction.guildId, {
+        submissionChannelId: interaction.channel.id,
+        submissionMessageId: msg.id
+      });
+
+      const successEmbed = new EmbedBuilder()
+        .setColor('#00FFFF')
+        .setTitle('✅ Submission Embed Posted')
+        .setDescription(`The achievement submission button has been posted in this channel.\n\nUsers can now click the button to start submitting achievements!`)
+        .setTimestamp();
+
+      await interaction.followUp({
+        embeds: [successEmbed],
+        ephemeral: true
+      });
+
+      await showConfigPanel(interaction, true);
+      return;
+    }
+
+    if (action === 'set_announcement_channel') {
+      await interaction.deferUpdate();
+
+      const channelSelect = new ChannelSelectMenuBuilder()
+        .setCustomId('select_announcement_channel')
+        .setPlaceholder('📢 Select Announcement Channel')
+        .setChannelTypes(ChannelType.GuildText);
+
+      const row = new ActionRowBuilder().addComponents(channelSelect);
+
+      const embed = new EmbedBuilder()
+        .setColor('#00FFFF')
+        .setTitle('📢 Set Announcement Channel')
+        .setDescription('Select the channel where achievement completions will be announced.\n\nThis is where users will see public announcements when someone completes an achievement.')
+        .setTimestamp();
+
+      await interaction.editReply({
+        embeds: [embed],
+        components: [row]
+      });
+      return;
+    }
+
+    if (action === 'set_verifier_role') {
+      await interaction.deferUpdate();
+
+      const roleSelect = new RoleSelectMenuBuilder()
+        .setCustomId('select_verifier_role')
+        .setPlaceholder('👥 Select Verifier Role');
+
+      const row = new ActionRowBuilder().addComponents(roleSelect);
+
+      const embed = new EmbedBuilder()
+        .setColor('#00FFFF')
+        .setTitle('👥 Set Verifier Role')
+        .setDescription('Select the role that can verify **Tier 1-8** achievements.\n\nMembers with this role will:\n• See verification threads\n• Approve or deny submissions\n• Award tokens to users')
+        .setTimestamp();
+
+      await interaction.editReply({
+        embeds: [embed],
+        components: [row]
+      });
+      return;
+    }
+
+    if (action === 'set_admin_role') {
+      await interaction.deferUpdate();
+
+      const roleSelect = new RoleSelectMenuBuilder()
+        .setCustomId('select_admin_role')
+        .setPlaceholder('⭐ Select Admin Role');
+
+      const row = new ActionRowBuilder().addComponents(roleSelect);
+
+      const embed = new EmbedBuilder()
+        .setColor('#00FFFF')
+        .setTitle('⭐ Set Admin Role')
+        .setDescription('Select the role that can verify **Tier 9+** challenges.\n\nMembers with this role will:\n• Handle Tier 9 live trials\n• Grant Tier 10 (Game Master) status\n• Override all verifications')
+        .setTimestamp();
+
+      await interaction.editReply({
+        embeds: [embed],
+        components: [row]
+      });
+      return;
+    }
+  }
+
+  // Config panel - channel selection
+  if (interaction.isChannelSelectMenu() && interaction.customId === 'select_announcement_channel') {
+    await interaction.deferUpdate();
+
+    const channel = interaction.channels.first();
+
+    await ServerModel.upsert(interaction.guildId, {
+      announcementChannelId: channel.id
+    });
+
+    const successEmbed = new EmbedBuilder()
+      .setColor('#00FFFF')
+      .setTitle('✅ Announcement Channel Set')
+      .setDescription(`Achievement announcements will now be posted in ${channel}`)
+      .setTimestamp();
+
+    await interaction.followUp({
+      embeds: [successEmbed],
+      ephemeral: true
+    });
+
+    await showConfigPanel(interaction, true);
+    return;
+  }
+
+  // Config panel - role selection
+  if (interaction.isRoleSelectMenu() && (interaction.customId === 'select_verifier_role' || interaction.customId === 'select_admin_role')) {
+    await interaction.deferUpdate();
+
+    const role = interaction.roles.first();
+
+    if (interaction.customId === 'select_verifier_role') {
+      await ServerModel.upsert(interaction.guildId, {
+        verifierRoleId: role.id
+      });
+
+      const successEmbed = new EmbedBuilder()
+        .setColor('#00FFFF')
+        .setTitle('✅ Verifier Role Set')
+        .setDescription(`${role} can now verify **Tier 1-8** achievements`)
+        .setTimestamp();
+
+      await interaction.followUp({
+        embeds: [successEmbed],
+        ephemeral: true
+      });
+    } else if (interaction.customId === 'select_admin_role') {
+      await ServerModel.upsert(interaction.guildId, {
+        adminRoleId: role.id
+      });
+
+      const successEmbed = new EmbedBuilder()
+        .setColor('#00FFFF')
+        .setTitle('✅ Admin Role Set')
+        .setDescription(`${role} can now verify **Tier 9+** challenges and grant Game Master status`)
+        .setTimestamp();
+
+      await interaction.followUp({
+        embeds: [successEmbed],
+        ephemeral: true
+      });
+    }
+
+    await showConfigPanel(interaction, true);
     return;
   }
 
