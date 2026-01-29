@@ -56,16 +56,25 @@ async function deployCommands() {
     
     const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
     
-    console.log(`  🔄 Deploying ${commands.length} command(s)...`);
+    console.log(`  🔄 Deploying ${commands.length} command(s) to Discord...`);
     
-    await rest.put(
+    const data = await rest.put(
       Routes.applicationCommands(process.env.CLIENT_ID),
       { body: commands },
     );
     
-    console.log(`  ✅ Commands deployed!`);
+    console.log(`  ✅ Successfully deployed ${data.length} command(s):`);
+    data.forEach(cmd => {
+      console.log(`     • /${cmd.name}`);
+    });
   } catch (error) {
-    console.error('  ❌ Command deployment failed:', error);
+    console.error('  ❌ Command deployment failed:', error.message);
+    if (error.code === 50001) {
+      console.error('  💡 Missing Access - Check bot permissions');
+    }
+    if (error.code === 'TOKEN_INVALID') {
+      console.error('  💡 Invalid token - Check DISCORD_TOKEN in .env');
+    }
   }
 }
 
