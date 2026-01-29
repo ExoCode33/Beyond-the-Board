@@ -2,19 +2,22 @@ import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'disc
 
 export function createSubmissionEmbed() {
   const embed = new EmbedBuilder()
-    .setColor('#5865F2')
-    .setTitle('🎮 Submit Achievement Proof')
+    .setColor('#00FFFF')
+    .setTitle('🎮 Beyond the Board - Achievement Submissions')
     .setDescription(
-      '**How it works:**\n' +
-      '1. Click the button below\n' +
-      '2. Select game and achievement\n' +
-      '3. Upload screenshots in thread\n' +
-      '4. Wait for verification\n\n' +
-      '**Rules:**\n' +
-      '• Max 3 pending submissions\n' +
-      '• 100% tier completion unlocks next tier\n' +
-      '• Tier 9 requires admin challenge'
+      '**━━━━━━━ How to Submit ━━━━━━━**\n\n' +
+      '**1.** Click the button below\n' +
+      '**2.** Select your game\n' +
+      '**3.** Choose an achievement\n' +
+      '**4.** Upload proof screenshots in the private thread\n' +
+      '**5.** Wait for verification\n\n' +
+      '**━━━━━━━ Rules ━━━━━━━**\n\n' +
+      '• Maximum **3 pending** submissions at once\n' +
+      '• Complete **100% of tier** to unlock next\n' +
+      '• **Tier 9** requires admin challenge trial\n' +
+      '• **Tier 10** is Game Master (admin granted)\n\u200b'
     )
+    .setFooter({ text: 'Cross-server progress • Persistent tokens' })
     .setTimestamp();
 
   const button = new ButtonBuilder()
@@ -46,11 +49,14 @@ export function createVerificationButtons(threadId) {
 
 export function createAnnouncementEmbed(user, achievement, totalTokens, gameName) {
   return new EmbedBuilder()
-    .setColor('#2ECC71')
+    .setColor('#00FFFF')
     .setTitle('🎉 Achievement Unlocked!')
     .setDescription(
-      `<@${user.id}> completed **${achievement.name}** in *${gameName}*!\n\n` +
-      `**Tokens Earned:** ${achievement.tokenReward} 🪙\n` +
+      `**${user.username}** has completed an achievement!\n\u200b\n` +
+      `**Game:** ${gameName}\n` +
+      `**Achievement:** ${achievement.name}\n` +
+      `**Tier:** ${achievement.tier}\n\u200b\n` +
+      `**Tokens Earned:** +${achievement.tokenReward} 🪙\n` +
       `**Total Tokens:** ${totalTokens} 🪙`
     )
     .setThumbnail(user.displayAvatarURL())
