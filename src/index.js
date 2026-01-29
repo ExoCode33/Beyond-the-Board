@@ -23,6 +23,27 @@ const client = new Client({
 
 client.commands = new Collection();
 
+// Load commands
+async function loadCommands() {
+  const commandsPath = path.join(__dirname, 'commands');
+  if (!fs.existsSync(commandsPath)) {
+    console.log('  ⚠️  No commands directory found');
+    return;
+  }
+  
+  const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+  for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = await import(`file://${filePath}`);
+    
+    if ('data' in command && 'execute' in command) {
+      client.commands.set(command.data.name, command);
+      console.log(`  ✅ Command: ${command.data.name}`);
+    }
+  }
+}
+
 // Ready event
 client.once(Events.ClientReady, async () => {
   console.log(`✅ Bot ready! Logged in as ${client.user.tag}`);
@@ -64,6 +85,29 @@ client.once(Events.ClientReady, async () => {
 
 // Interaction handler
 client.on(Events.InteractionCreate, async (interaction) => {
+  // Handle slash commands
+  if (interaction.isChatInputCommand()) {
+    const command = client.commands.get(interaction.commandName);
+    
+    if (!command) {
+      console.error(`Command ${interaction.commandName} not found`);
+      return;
+    }
+
+    try {
+      await command.execute(interaction);
+    } catch (error) {
+      console.error(`Error executing ${interaction.commandName}:`, error);
+      const msg = { content: '❌ Command error!', ephemeral: true };
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp(msg);
+      } else {
+        await interaction.reply(msg);
+      }
+    }
+    return;
+  }
+
   // Button: Submit achievement
   if (interaction.isButton() && interaction.customId === 'submit_achievement') {
     await interaction.deferReply({ ephemeral: true });
@@ -211,7 +255,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     });
 
     await thread.send({
-      content: `<@${userId}>\n\n**${achievement.name}**\n${achievement.description}\n\nPlease upload **${achievement.requiredImages}** screenshot(s).`
+      content: `<@${userId}>\n\n**${achievement.name}**\n${achievement.description}\n\n**Required:** Upload **${achievement.requiredImages}** screenshot(s) showing:\n${achievement.imageRequirements.map((req, i) => `${i + 1}. ${req}`).join('\n')}\n\n${achievement.verificationHints ? `*Verification hints: ${achievement.verificationHints}*` : ''}`
     });
 
     const buttons = createVerificationButtons(thread.id);
@@ -278,7 +322,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
       }
     }
 
-    await interaction.channel.send(`✅ Approved! <@${achievement.user_id}> earned **${achievementData.tokenReward} tokens** 🪙`);
+    await interaction.channel.send(`✅ **Approved!** <@${achievement.user_id}> earned **${achievementData.tokenReward} tokens** 🪙`);
     await interaction.editReply('✅ Achievement approved!');
 
     setTimeout(async () => {
@@ -349,6 +393,9 @@ async function init() {
 
     console.log('\n🎮 Games:');
     await gameLoader.loadGames();
+
+    console.log('\n⚙️  Commands:');
+    await loadCommands();
 
     console.log('\n🔐 Logging in...');
     await client.login(process.env.DISCORD_TOKEN);
