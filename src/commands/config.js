@@ -1,31 +1,35 @@
-import { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, StringSelectMenuBuilder, ChannelSelectMenuBuilder, RoleSelectMenuBuilder, EmbedBuilder, ChannelType } from 'discord.js';
 import { ServerModel } from '../database/models.js';
 import { createSubmissionEmbed } from '../utils/embedBuilder.js';
 
 export const data = new SlashCommandBuilder()
   .setName('config-beyondtheboard')
-  .setDescription('Configure bot settings (admin only)')
+  .setDescription('Configure bot settings (Admin only)')
   .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
   .setDMPermission(false);
 
 export async function execute(interaction) {
   await interaction.deferReply({ ephemeral: true });
 
+  await showConfigPanel(interaction);
+}
+
+async function showConfigPanel(interaction, isUpdate = false) {
   const config = await ServerModel.findByGuildId(interaction.guildId);
 
   const embed = new EmbedBuilder()
-    .setColor('#5865F2')
-    .setTitle('🎮 Beyond the Board - Admin Panel')
-    .setDescription('**Current Configuration:**')
+    .setColor('#00FFFF')
+    .setTitle('🎮 Beyond the Board - Configuration Panel')
+    .setDescription('**Current Server Configuration**\n\u200b')
     .addFields(
       {
-        name: 'Submission Channel',
-        value: config?.submission_channel_id ? `<#${config.submission_channel_id}>` : '❌ Not set',
+        name: '📋 Submission Channel',
+        value: config?.submission_channel_id ? `<#${config.submission_channel_id}>` : '`Not configured`',
         inline: true
       },
       {
-        name: 'Announcement Channel',
-        value: config?.announcement_channel_id ? `<#${config.announcement_channel_id}>` : '❌ Not set',
+        name: '📢 Announcement Channel',
+        value: config?.announcement_channel_id ? `<#${config.announcement_channel_id}>` : '`Not configured`',
         inline: true
       },
       {
@@ -34,146 +38,244 @@ export async function execute(interaction) {
         inline: true
       },
       {
-        name: 'Verifier Role',
-        value: config?.verifier_role_id ? `<@&${config.verifier_role_id}>` : '❌ Not set',
+        name: '👥 Verifier Role',
+        value: config?.verifier_role_id ? `<@&${config.verifier_role_id}>` : '`Not configured`',
         inline: true
       },
       {
-        name: 'Admin Role',
-        value: config?.admin_role_id ? `<@&${config.admin_role_id}>` : '❌ Not set',
+        name: '⭐ Admin Role',
+        value: config?.admin_role_id ? `<@&${config.admin_role_id}>` : '`Not configured`',
+        inline: true
+      },
+      {
+        name: '\u200b',
+        value: '\u200b',
         inline: true
       }
     )
-    .setFooter({ text: 'Use the select menu to configure settings' })
+    .setFooter({ text: 'Select an action below to configure the bot' })
     .setTimestamp();
 
   const selectMenu = new StringSelectMenuBuilder()
     .setCustomId('admin_config_action')
-    .setPlaceholder('Select an action')
+    .setPlaceholder('⚙️ Select Configuration Action')
     .addOptions([
       {
-        label: '⚙️ Setup Submission Embed',
-        description: 'Post the static submission button here',
-        value: 'setup_embed'
+        label: 'Setup Submission Embed',
+        description: 'Post the achievement submission button',
+        value: 'setup_embed',
+        emoji: '📋'
       },
       {
-        label: '📢 Set Announcement Channel',
-        description: 'Where achievements are announced',
-        value: 'set_announcement_channel'
+        label: 'Set Announcement Channel',
+        description: 'Configure where achievements are announced',
+        value: 'set_announcement_channel',
+        emoji: '📢'
       },
       {
-        label: '👥 Set Verifier Role',
-        description: 'Role that verifies Tier 1-8',
-        value: 'set_verifier_role'
+        label: 'Set Verifier Role',
+        description: 'Role that can verify Tier 1-8 achievements',
+        value: 'set_verifier_role',
+        emoji: '👥'
       },
       {
-        label: '⭐ Set Admin Role',
-        description: 'Role that verifies Tier 9+',
-        value: 'set_admin_role'
+        label: 'Set Admin Role',
+        description: 'Role that can verify Tier 9+ challenges',
+        value: 'set_admin_role',
+        emoji: '⭐'
+      },
+      {
+        label: 'View Current Configuration',
+        description: 'Refresh and view current settings',
+        value: 'refresh_config',
+        emoji: '🔄'
       }
     ]);
 
   const row = new ActionRowBuilder().addComponents(selectMenu);
 
-  await interaction.editReply({
-    embeds: [embed],
-    components: [row]
+  if (isUpdate) {
+    await interaction.editReply({
+      embeds: [embed],
+      components: [row]
+    });
+  } else {
+    await interaction.editReply({
+      embeds: [embed],
+      components: [row]
+    });
+  }
+}
+
+// Handle configuration actions
+export async function handleConfigInteraction(interaction) {
+  if (!interaction.isStringSelectMenu() || interaction.customId !== 'admin_config_action') return;
+
+  const action = interaction.values[0];
+
+  if (action === 'refresh_config') {
+    await interaction.deferUpdate();
+    await showConfigPanel(interaction, true);
+    return;
+  }
+
+  if (action === 'setup_embed') {
+    await interaction.deferUpdate();
+    
+    const msg = await interaction.channel.send(createSubmissionEmbed());
+    await ServerModel.upsert(interaction.guildId, {
+      submissionChannelId: interaction.channel.id,
+      submissionMessageId: msg.id
+    });
+
+    const successEmbed = new EmbedBuilder()
+      .setColor('#00FFFF')
+      .setTitle('✅ Submission Embed Posted')
+      .setDescription(`The achievement submission button has been posted in this channel.\n\nUsers can now click the button to start submitting achievements!`)
+      .setTimestamp();
+
+    await interaction.followUp({
+      embeds: [successEmbed],
+      ephemeral: true
+    });
+
+    await showConfigPanel(interaction, true);
+    return;
+  }
+
+  if (action === 'set_announcement_channel') {
+    await interaction.deferUpdate();
+
+    const channelSelect = new ChannelSelectMenuBuilder()
+      .setCustomId('select_announcement_channel')
+      .setPlaceholder('📢 Select Announcement Channel')
+      .setChannelTypes(ChannelType.GuildText);
+
+    const row = new ActionRowBuilder().addComponents(channelSelect);
+
+    const embed = new EmbedBuilder()
+      .setColor('#00FFFF')
+      .setTitle('📢 Set Announcement Channel')
+      .setDescription('Select the channel where achievement completions will be announced.\n\nThis is where users will see public announcements when someone completes an achievement.')
+      .setTimestamp();
+
+    await interaction.editReply({
+      embeds: [embed],
+      components: [row]
+    });
+    return;
+  }
+
+  if (action === 'set_verifier_role') {
+    await interaction.deferUpdate();
+
+    const roleSelect = new RoleSelectMenuBuilder()
+      .setCustomId('select_verifier_role')
+      .setPlaceholder('👥 Select Verifier Role');
+
+    const row = new ActionRowBuilder().addComponents(roleSelect);
+
+    const embed = new EmbedBuilder()
+      .setColor('#00FFFF')
+      .setTitle('👥 Set Verifier Role')
+      .setDescription('Select the role that can verify **Tier 1-8** achievements.\n\nMembers with this role will:\n• See verification threads\n• Approve or deny submissions\n• Award tokens to users')
+      .setTimestamp();
+
+    await interaction.editReply({
+      embeds: [embed],
+      components: [row]
+    });
+    return;
+  }
+
+  if (action === 'set_admin_role') {
+    await interaction.deferUpdate();
+
+    const roleSelect = new RoleSelectMenuBuilder()
+      .setCustomId('select_admin_role')
+      .setPlaceholder('⭐ Select Admin Role');
+
+    const row = new ActionRowBuilder().addComponents(roleSelect);
+
+    const embed = new EmbedBuilder()
+      .setColor('#00FFFF')
+      .setTitle('⭐ Set Admin Role')
+      .setDescription('Select the role that can verify **Tier 9+** challenges.\n\nMembers with this role will:\n• Handle Tier 9 live trials\n• Grant Tier 10 (Game Master) status\n• Override all verifications')
+      .setTimestamp();
+
+    await interaction.editReply({
+      embeds: [embed],
+      components: [row]
+    });
+    return;
+  }
+}
+
+// Handle channel selection
+export async function handleChannelSelect(interaction) {
+  if (!interaction.isChannelSelectMenu() || interaction.customId !== 'select_announcement_channel') return;
+
+  await interaction.deferUpdate();
+
+  const channel = interaction.channels.first();
+
+  await ServerModel.upsert(interaction.guildId, {
+    announcementChannelId: channel.id
   });
 
-  const collector = interaction.channel.createMessageComponentCollector({
-    filter: i => i.user.id === interaction.user.id && i.customId === 'admin_config_action',
-    time: 300000
+  const successEmbed = new EmbedBuilder()
+    .setColor('#00FFFF')
+    .setTitle('✅ Announcement Channel Set')
+    .setDescription(`Achievement announcements will now be posted in ${channel}`)
+    .setTimestamp();
+
+  await interaction.followUp({
+    embeds: [successEmbed],
+    ephemeral: true
   });
 
-  collector.on('collect', async i => {
-    const action = i.values[0];
+  await showConfigPanel(interaction, true);
+}
 
-    if (action === 'setup_embed') {
-      await i.deferUpdate();
-      
-      const msg = await interaction.channel.send(createSubmissionEmbed());
-      await ServerModel.upsert(interaction.guildId, {
-        submissionChannelId: interaction.channel.id,
-        submissionMessageId: msg.id
-      });
+// Handle role selection
+export async function handleRoleSelect(interaction) {
+  if (!interaction.isRoleSelectMenu()) return;
 
-      await i.followUp({
-        content: '✅ Submission embed posted!',
-        ephemeral: true
-      });
-    }
+  await interaction.deferUpdate();
 
-    else if (action === 'set_announcement_channel') {
-      await i.reply({
-        content: '📢 Mention the channel for announcements (e.g., #achievements):',
-        ephemeral: true
-      });
+  const role = interaction.roles.first();
 
-      const msgFilter = m => m.author.id === interaction.user.id;
-      const msgCollector = interaction.channel.createMessageCollector({ filter: msgFilter, time: 60000, max: 1 });
+  if (interaction.customId === 'select_verifier_role') {
+    await ServerModel.upsert(interaction.guildId, {
+      verifierRoleId: role.id
+    });
 
-      msgCollector.on('collect', async msg => {
-        const channel = msg.mentions.channels.first();
-        if (!channel) {
-          return msg.reply({ content: '❌ Please mention a valid channel.' });
-        }
+    const successEmbed = new EmbedBuilder()
+      .setColor('#00FFFF')
+      .setTitle('✅ Verifier Role Set')
+      .setDescription(`${role} can now verify **Tier 1-8** achievements`)
+      .setTimestamp();
 
-        await ServerModel.upsert(interaction.guildId, {
-          announcementChannelId: channel.id
-        });
+    await interaction.followUp({
+      embeds: [successEmbed],
+      ephemeral: true
+    });
+  } else if (interaction.customId === 'select_admin_role') {
+    await ServerModel.upsert(interaction.guildId, {
+      adminRoleId: role.id
+    });
 
-        await msg.reply(`✅ Announcement channel set to ${channel}!`);
-      });
-    }
+    const successEmbed = new EmbedBuilder()
+      .setColor('#00FFFF')
+      .setTitle('✅ Admin Role Set')
+      .setDescription(`${role} can now verify **Tier 9+** challenges and grant Game Master status`)
+      .setTimestamp();
 
-    else if (action === 'set_verifier_role') {
-      await i.reply({
-        content: '👥 Mention the role for Tier 1-8 verifiers (e.g., @Verifier):',
-        ephemeral: true
-      });
+    await interaction.followUp({
+      embeds: [successEmbed],
+      ephemeral: true
+    });
+  }
 
-      const msgFilter = m => m.author.id === interaction.user.id;
-      const msgCollector = interaction.channel.createMessageCollector({ filter: msgFilter, time: 60000, max: 1 });
-
-      msgCollector.on('collect', async msg => {
-        const role = msg.mentions.roles.first();
-        if (!role) {
-          return msg.reply({ content: '❌ Please mention a valid role.' });
-        }
-
-        await ServerModel.upsert(interaction.guildId, {
-          verifierRoleId: role.id
-        });
-
-        await msg.reply(`✅ Verifier role set to ${role}!`);
-      });
-    }
-
-    else if (action === 'set_admin_role') {
-      await i.reply({
-        content: '⭐ Mention the role for Tier 9+ admins (e.g., @Admin):',
-        ephemeral: true
-      });
-
-      const msgFilter = m => m.author.id === interaction.user.id;
-      const msgCollector = interaction.channel.createMessageCollector({ filter: msgFilter, time: 60000, max: 1 });
-
-      msgCollector.on('collect', async msg => {
-        const role = msg.mentions.roles.first();
-        if (!role) {
-          return msg.reply({ content: '❌ Please mention a valid role.' });
-        }
-
-        await ServerModel.upsert(interaction.guildId, {
-          adminRoleId: role.id
-        });
-
-        await msg.reply(`✅ Admin role set to ${role}!`);
-      });
-    }
-  });
-
-  collector.on('end', () => {
-    interaction.editReply({ components: [] }).catch(() => {});
-  });
+  await showConfigPanel(interaction, true);
 }
