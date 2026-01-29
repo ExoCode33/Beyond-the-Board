@@ -16,13 +16,20 @@ export async function execute(interaction) {
   const allProgress = await UserModel.getAllGameProgress(userId);
 
   if (allProgress.length === 0) {
-    return interaction.editReply('❌ You haven\'t started any games yet! Click the "Submit Achievement Proof" button to begin.');
+    const embed = new EmbedBuilder()
+      .setColor('#00FFFF')
+      .setTitle('🎮 Your Profile')
+      .setDescription('You haven\'t started any games yet!\n\nClick the **"Submit Achievement Proof"** button in the submissions channel to begin your journey.')
+      .setThumbnail(interaction.user.displayAvatarURL())
+      .setTimestamp();
+
+    return interaction.editReply({ embeds: [embed] });
   }
 
   const embed = new EmbedBuilder()
-    .setColor('#5865F2')
+    .setColor('#00FFFF')
     .setTitle(`🎮 ${interaction.user.username}'s Profile`)
-    .setDescription('**Your Progress Across All Games:**\n')
+    .setDescription('**━━━━━━━ Your Progress ━━━━━━━**\n\u200b')
     .setThumbnail(interaction.user.displayAvatarURL())
     .setTimestamp();
 
@@ -30,14 +37,19 @@ export async function execute(interaction) {
     const game = gameLoader.getGame(prog.game_name);
     const displayName = game ? game.displayName : prog.game_name;
     
+    const tierBar = '█'.repeat(prog.current_tier) + '░'.repeat(10 - prog.current_tier);
+    
     embed.addFields({
       name: `${displayName}`,
-      value: `**Tier:** ${prog.current_tier}/10\n**Tokens:** ${prog.tokens} 🪙`,
+      value: 
+        `**Tier:** ${prog.current_tier}/10\n` +
+        `${tierBar}\n` +
+        `**Tokens:** ${prog.tokens} 🪙`,
       inline: true
     });
   }
 
-  embed.setFooter({ text: 'Select a game below to see detailed progress' });
+  embed.setFooter({ text: 'Select a game below for detailed progress' });
 
   const gameOptions = allProgress.map(prog => {
     const game = gameLoader.getGame(prog.game_name);
@@ -46,14 +58,14 @@ export async function execute(interaction) {
     return {
       label: displayName,
       value: prog.game_name,
-      description: `Tier ${prog.current_tier} • ${prog.tokens} tokens`,
+      description: `Tier ${prog.current_tier}/10 • ${prog.tokens} tokens`,
       emoji: '🎮'
     };
   });
 
   const selectMenu = new StringSelectMenuBuilder()
     .setCustomId('profile_select_game')
-    .setPlaceholder('Select a game for details')
+    .setPlaceholder('🎮 Select game for detailed view')
     .addOptions(gameOptions);
 
   const row = new ActionRowBuilder().addComponents(selectMenu);
@@ -76,11 +88,12 @@ export async function execute(interaction) {
     const progress = await UserModel.getGameProgress(userId, gameName);
 
     const detailEmbed = new EmbedBuilder()
-      .setColor('#5865F2')
+      .setColor('#00FFFF')
       .setTitle(`🎮 ${game.displayName} - Detailed Progress`)
       .setDescription(
+        `**━━━━━━━ Your Stats ━━━━━━━**\n` +
         `**Current Tier:** ${progress.current_tier}/10\n` +
-        `**Tokens:** ${progress.tokens} 🪙\n\n`
+        `**Tokens Earned:** ${progress.tokens} 🪙\n\u200b`
       )
       .setTimestamp();
 
@@ -89,29 +102,31 @@ export async function execute(interaction) {
       if (tierAchs.length === 0) continue;
 
       const completed = await AchievementModel.getCompletedForTier(userId, gameName, tier);
-      const completionRate = tierAchs.length > 0 ? `${completed.length}/${tierAchs.length}` : '0/0';
+      const completionRate = `${completed.length}/${tierAchs.length}`;
       const percentage = tierAchs.length > 0 ? Math.floor((completed.length / tierAchs.length) * 100) : 0;
+      
+      const progressBar = '█'.repeat(Math.floor(percentage / 10)) + '░'.repeat(10 - Math.floor(percentage / 10));
 
-      let tierText = `Progress: ${completionRate} (${percentage}%)\n\n`;
+      let tierText = `**Progress:** ${completionRate} (${percentage}%)\n${progressBar}\n\u200b\n`;
 
       for (const ach of tierAchs) {
         const userAch = await AchievementModel.findByUserAndAchievement(userId, ach.id);
         
         if (userAch?.status === 'approved') {
-          tierText += `✅ **${ach.name}** - ${ach.tokenReward} tokens\n`;
+          tierText += `✅ **${ach.name}** - ${ach.tokenReward} 🪙\n`;
         } else if (userAch?.status === 'pending') {
-          tierText += `⏳ **${ach.name}** - Pending\n`;
+          tierText += `⏳ **${ach.name}** - *Pending Verification*\n`;
         } else if (userAch?.status === 'rejected') {
-          tierText += `❌ **${ach.name}** - Denied\n`;
+          tierText += `❌ **${ach.name}** - *Denied*\n`;
         } else if (tier > progress.current_tier) {
-          tierText += `🔒 **${ach.name}** - Locked\n`;
+          tierText += `🔒 **${ach.name}** - *Locked*\n`;
         } else {
-          tierText += `⭕ **${ach.name}** - Not claimed\n`;
+          tierText += `⭕ **${ach.name}** - *Available*\n`;
         }
       }
 
       detailEmbed.addFields({
-        name: `Tier ${tier}`,
+        name: `═══ Tier ${tier} ═══`,
         value: tierText,
         inline: false
       });
@@ -146,9 +161,9 @@ export async function execute(interaction) {
     const allProgress = await UserModel.getAllGameProgress(userId);
     
     const embed = new EmbedBuilder()
-      .setColor('#5865F2')
+      .setColor('#00FFFF')
       .setTitle(`🎮 ${interaction.user.username}'s Profile`)
-      .setDescription('**Your Progress Across All Games:**\n')
+      .setDescription('**━━━━━━━ Your Progress ━━━━━━━**\n\u200b')
       .setThumbnail(interaction.user.displayAvatarURL())
       .setTimestamp();
 
@@ -156,35 +171,4 @@ export async function execute(interaction) {
       const game = gameLoader.getGame(prog.game_name);
       const displayName = game ? game.displayName : prog.game_name;
       
-      embed.addFields({
-        name: `${displayName}`,
-        value: `**Tier:** ${prog.current_tier}/10\n**Tokens:** ${prog.tokens} 🪙`,
-        inline: true
-      });
-    }
-
-    const gameOptions = allProgress.map(prog => {
-      const game = gameLoader.getGame(prog.game_name);
-      const displayName = game ? game.displayName : prog.game_name;
-      
-      return {
-        label: displayName,
-        value: prog.game_name,
-        description: `Tier ${prog.current_tier} • ${prog.tokens} tokens`,
-        emoji: '🎮'
-      };
-    });
-
-    const selectMenu = new StringSelectMenuBuilder()
-      .setCustomId('profile_select_game')
-      .setPlaceholder('Select a game for details')
-      .addOptions(gameOptions);
-
-    const row = new ActionRowBuilder().addComponents(selectMenu);
-
-    await i.editReply({
-      embeds: [embed],
-      components: [row]
-    });
-  });
-}
+      const tierBar = '█'.repeat(prog.current_tier) + '░'.r
