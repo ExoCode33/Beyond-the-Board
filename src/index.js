@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Collection, Events, ActionRowBuilder, StringSelectMenuBuilder, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionFlagsBits } from 'discord.js';
+import { Client, GatewayIntentBits, Collection, Events, ActionRowBuilder, StringSelectMenuBuilder, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionFlagsBits, REST, Routes } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -39,8 +39,33 @@ async function loadCommands() {
     
     if ('data' in command && 'execute' in command) {
       client.commands.set(command.data.name, command);
-      console.log(`  ✅ Command: ${command.data.name}`);
+      console.log(`  ✅ Loaded: ${command.data.name}`);
     }
+  }
+}
+
+// Auto-deploy commands
+async function deployCommands() {
+  try {
+    const commands = Array.from(client.commands.values()).map(cmd => cmd.data.toJSON());
+    
+    if (commands.length === 0) {
+      console.log('  ⚠️  No commands to deploy');
+      return;
+    }
+    
+    const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+    
+    console.log(`  🔄 Deploying ${commands.length} command(s)...`);
+    
+    await rest.put(
+      Routes.applicationCommands(process.env.CLIENT_ID),
+      { body: commands },
+    );
+    
+    console.log(`  ✅ Commands deployed!`);
+  } catch (error) {
+    console.error('  ❌ Command deployment failed:', error);
   }
 }
 
@@ -395,16 +420,4 @@ async function init() {
     await gameLoader.loadGames();
 
     console.log('\n⚙️  Commands:');
-    await loadCommands();
-
-    console.log('\n🔐 Logging in...');
-    await client.login(process.env.DISCORD_TOKEN);
-  } catch (error) {
-    console.error('❌ Fatal error:', error);
-    process.exit(1);
-  }
-}
-
-init();
-
-export default client;
+    await loadCommand
