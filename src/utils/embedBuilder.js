@@ -9,31 +9,31 @@ const COLORS = {
   GOLD: 0xFFD700,
 };
 
-// Purple divider line
-const DIVIDER = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+// Purple ANSI divider
+const DIVIDER = '```ansi\n\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n```';
 
 export function createSubmissionEmbed() {
   const embed = new EmbedBuilder()
     .setColor(COLORS.CYAN)
-    .setTitle('Achievement Submission')
+    .setTitle('**Beyond the Board - Achievements**')
     .setDescription(
-      `${DIVIDER}\n` +
-      '**📝 How It Works**\n' +
+      DIVIDER +
+      '```ansi\n\x1b[36m📝 How It Works\x1b[0m\n```' +
       '```\n' +
       '1 → Click the button below\n' +
       '2 → Select your game\n' +
       '3 → Choose an achievement\n' +
       '4 → Upload proof in thread\n' +
-      '```\n' +
-      `${DIVIDER}\n` +
-      '**⚔️ Tier System**\n' +
-      '```yaml\n' +
-      'Tiers 1-8: Complete 100% to unlock next\n' +
-      'Tier 9:    Live admin trial (costs tokens)\n' +
-      'Tier 10:   Admin granted only\n' +
-      '```\n' +
-      `${DIVIDER}\n` +
-      '**⚡ Rules**\n' +
+      '```' +
+      DIVIDER +
+      '```ansi\n\x1b[36m⚔️ Tier System\x1b[0m\n```' +
+      '```ansi\n' +
+      '\x1b[36mTiers 1-8:\x1b[0m Complete 100% to unlock next\n' +
+      '\x1b[36mTier 9:\x1b[0m    Live admin trial (costs tokens)\n' +
+      '\x1b[36mTier 10:\x1b[0m   Game Master (admin granted)\n' +
+      '```' +
+      DIVIDER +
+      '```ansi\n\x1b[36m⚡ Rules\x1b[0m\n```' +
       '```diff\n' +
       '+ Maximum 3 pending submissions\n' +
       '+ Cross-server progress tracking\n' +
@@ -73,16 +73,23 @@ export function createVerificationButtons(threadId) {
 export function createAnnouncementEmbed(user, achievement, totalTokens, gameName) {
   return new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`🏆 ${user.username} completed a challenge`)
+    .setTitle('**Achievement Unlocked**')
     .setDescription(
-      `${DIVIDER}\n` +
-      `🎮 **Game:** ${gameName}\n` +
-      `⭐ **Achievement:** ${achievement.name}\n` +
-      `🛡️ **Tier:** ${achievement.tier}\n` +
-      `${DIVIDER}\n` +
-      `🪙 **Tokens Earned:** +${achievement.tokenReward}\n` +
-      `💎 **Total Tokens:** ${totalTokens}\n` +
-      `${DIVIDER}`
+      DIVIDER +
+      '```ansi\n' +
+      `\x1b[35m🏆 ${user.username} completed a challenge\x1b[0m\n` +
+      '```' +
+      '```ansi\n' +
+      `\x1b[36m🎮 Game:\x1b[0m      ${gameName}\n` +
+      `\x1b[36m⭐ Achievement:\x1b[0m ${achievement.name}\n` +
+      `\x1b[36m🛡️ Tier:\x1b[0m      ${achievement.tier}\n` +
+      '```' +
+      DIVIDER +
+      '```ansi\n' +
+      `\x1b[33m🪙 Tokens Earned:\x1b[0m +${achievement.tokenReward}\n` +
+      `\x1b[33m💎 Total Tokens:\x1b[0m  ${totalTokens}\n` +
+      '```' +
+      DIVIDER
     )
     .setThumbnail(user.displayAvatarURL({ size: 256 }))
     .setFooter({ text: '『  』' })
@@ -92,15 +99,26 @@ export function createAnnouncementEmbed(user, achievement, totalTokens, gameName
 export function createConfigEmbed(config) {
   return new EmbedBuilder()
     .setColor(COLORS.CYAN)
-    .setTitle('⚙️ Server Configuration')
+    .setTitle('**Beyond the Board - Configuration**')
     .setDescription(
-      `${DIVIDER}\n` +
-      `📋 **Submission Channel:** ${config?.submission_channel_id ? `<#${config.submission_channel_id}>` : '`Not set`'}\n` +
-      `📢 **Announcement Channel:** ${config?.announcement_channel_id ? `<#${config.announcement_channel_id}>` : '`Not set`'}\n` +
-      `${DIVIDER}\n` +
-      `👥 **Verifier Role:** ${config?.verifier_role_id ? `<@&${config.verifier_role_id}>` : '`Not set`'}\n` +
-      `⭐ **Admin Role:** ${config?.admin_role_id ? `<@&${config.admin_role_id}>` : '`Not set`'}\n` +
-      `${DIVIDER}`
+      DIVIDER +
+      '```ansi\n\x1b[36m⚙️ Server Settings\x1b[0m\n```' +
+      '```ansi\n' +
+      `\x1b[36m📋 Submission Channel:\x1b[0m\n` +
+      `   ${config?.submission_channel_id ? `<#${config.submission_channel_id}>` : 'Not set'}\n` +
+      '\n' +
+      `\x1b[36m📢 Announcement Channel:\x1b[0m\n` +
+      `   ${config?.announcement_channel_id ? `<#${config.announcement_channel_id}>` : 'Not set'}\n` +
+      '```' +
+      DIVIDER +
+      '```ansi\n' +
+      `\x1b[36m👥 Verifier Role:\x1b[0m\n` +
+      `   ${config?.verifier_role_id ? `<@&${config.verifier_role_id}>` : 'Not set'}\n` +
+      '\n' +
+      `\x1b[36m⭐ Admin Role:\x1b[0m\n` +
+      `   ${config?.admin_role_id ? `<@&${config.admin_role_id}>` : 'Not set'}\n` +
+      '```' +
+      DIVIDER
     )
     .setFooter({ text: '『  』 • Select an action below' })
     .setTimestamp();
@@ -109,27 +127,31 @@ export function createConfigEmbed(config) {
 export function createProfileEmbed(user, allProgress) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`${user.username}'s Profile`)
+    .setTitle(`**${user.username}'s Profile**`)
     .setThumbnail(user.displayAvatarURL({ size: 256 }));
 
   if (allProgress.length === 0) {
     embed.setDescription(
-      `${DIVIDER}\n` +
-      '**No active games**\n' +
-      'Submit your first achievement to begin!\n' +
-      `${DIVIDER}`
+      DIVIDER +
+      '```ansi\n\x1b[31mNo active games\x1b[0m\n```' +
+      '```\nSubmit your first achievement to begin!\n```' +
+      DIVIDER
     );
   } else {
-    let description = `${DIVIDER}\n`;
+    let description = DIVIDER;
     
     for (const prog of allProgress) {
       const tierBar = '▰'.repeat(prog.current_tier) + '▱'.repeat(10 - prog.current_tier);
       
-      description += `🎮 **${prog.game_name}**\n`;
-      description += `🛡️ Tier: ${prog.current_tier}/10\n`;
-      description += `${tierBar}\n`;
-      description += `🪙 Tokens: ${prog.tokens}\n`;
-      description += `${DIVIDER}\n`;
+      description += '```ansi\n';
+      description += `\x1b[35m🎮 ${prog.game_name}\x1b[0m\n`;
+      description += '```';
+      description += '```ansi\n';
+      description += `\x1b[36m🛡️ Tier:\x1b[0m   ${prog.current_tier}/10\n`;
+      description += `\x1b[36m${tierBar}\x1b[0m\n`;
+      description += `\x1b[33m🪙 Tokens:\x1b[0m ${prog.tokens}\n`;
+      description += '```';
+      description += DIVIDER;
     }
     
     embed.setDescription(description);
@@ -144,12 +166,14 @@ export function createProfileEmbed(user, allProgress) {
 export function createDetailedProfileEmbed(user, game, progress, tierAchievements) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`${game.displayName}`)
+    .setTitle(`**${game.displayName}**`)
     .setDescription(
-      `${DIVIDER}\n` +
-      `🛡️ **Tier:** ${progress.current_tier}/10\n` +
-      `🪙 **Tokens:** ${progress.tokens}\n` +
-      `${DIVIDER}`
+      DIVIDER +
+      '```ansi\n' +
+      `\x1b[36m🛡️ Tier:\x1b[0m   ${progress.current_tier}/10\n` +
+      `\x1b[33m🪙 Tokens:\x1b[0m ${progress.tokens}\n` +
+      '```' +
+      DIVIDER
     )
     .setThumbnail(user.displayAvatarURL());
 
@@ -162,30 +186,29 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
     const percentage = Math.floor((completed / total) * 100);
     const progressBar = '█'.repeat(Math.floor(percentage / 10)) + '░'.repeat(10 - Math.floor(percentage / 10));
 
-    let tierText = `**Progress:** ${completed}/${total} (${percentage}%)\n${progressBar}\n${DIVIDER}\n`;
+    let tierText = '```ansi\n';
+    tierText += `\x1b[36mProgress:\x1b[0m ${completed}/${total} (${percentage}%)\n`;
+    tierText += `${progressBar}\n`;
+    tierText += '```\n';
 
     for (const ach of achievements) {
-      let icon = '⭕';
-      
       if (ach.locked) {
-        icon = '🔒';
-        tierText += `${icon} **${ach.name}:** Locked\n`;
+        tierText += `🔒 **${ach.name}:** Locked\n`;
       } else if (ach.userStatus === 'approved') {
-        icon = '✅';
-        tierText += `${icon} **${ach.name}:** Complete\n`;
+        tierText += `✅ **${ach.name}:** Complete\n`;
       } else if (ach.userStatus === 'pending') {
-        icon = '⏳';
-        tierText += `${icon} **${ach.name}:** Pending\n`;
+        tierText += `⏳ **${ach.name}:** Pending\n`;
       } else if (ach.userStatus === 'rejected') {
-        icon = '❌';
-        tierText += `${icon} **${ach.name}:** Denied\n`;
+        tierText += `❌ **${ach.name}:** Denied\n`;
       } else {
-        tierText += `${icon} **${ach.name}:** ${ach.tokenReward} 🪙\n`;
+        tierText += `⭕ **${ach.name}:** ${ach.tokenReward} 🪙\n`;
       }
     }
 
+    tierText += DIVIDER;
+
     embed.addFields({
-      name: `Tier ${tier}`,
+      name: `**Tier ${tier}**`,
       value: tierText,
       inline: false
     });
@@ -200,12 +223,14 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
 export function createAchievementListEmbed(game, progress, achievements) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.CYAN)
-    .setTitle(`${game.displayName} - Achievements`)
+    .setTitle(`**${game.displayName} - Achievements**`)
     .setDescription(
-      `${DIVIDER}\n` +
-      `🛡️ **Your Tier:** ${progress.current_tier}/10\n` +
-      `🪙 **Tokens:** ${progress.tokens}\n` +
-      `${DIVIDER}`
+      DIVIDER +
+      '```ansi\n' +
+      `\x1b[36m🛡️ Your Tier:\x1b[0m ${progress.current_tier}/10\n` +
+      `\x1b[33m🪙 Tokens:\x1b[0m   ${progress.tokens}\n` +
+      '```' +
+      DIVIDER
     );
 
   for (let tier = 1; tier <= 8; tier++) {
@@ -231,7 +256,7 @@ export function createAchievementListEmbed(game, progress, achievements) {
     tierText += DIVIDER;
 
     embed.addFields({
-      name: `Tier ${tier}`,
+      name: `**Tier ${tier}**`,
       value: tierText,
       inline: false
     });
@@ -245,23 +270,21 @@ export function createAchievementListEmbed(game, progress, achievements) {
 
 export function createChannelSelectEmbed(type) {
   const titles = {
-    submission: '📋 Setup Submission Embed',
-    announcement: '📢 Set Announcement Channel'
+    submission: '**Beyond the Board - Setup Submission**',
+    announcement: '**Beyond the Board - Setup Announcements**'
   };
 
   const descriptions = {
     submission: 
-      `${DIVIDER}\n` +
-      'Select the channel where the submission button will be posted.\n' +
-      '\n' +
-      'Players will click this button to begin submitting achievements.\n' +
-      `${DIVIDER}`,
+      DIVIDER +
+      '```ansi\n\x1b[36m📋 Submission Channel\x1b[0m\n```' +
+      '```\nSelect where the submission button will be posted.\n\nPlayers click this button to begin.\n```' +
+      DIVIDER,
     announcement: 
-      `${DIVIDER}\n` +
-      'Select the channel for achievement announcements.\n' +
-      '\n' +
-      'Completed achievements will be celebrated here publicly.\n' +
-      `${DIVIDER}`
+      DIVIDER +
+      '```ansi\n\x1b[36m📢 Announcement Channel\x1b[0m\n```' +
+      '```\nSelect where achievements will be announced.\n\nCompleted achievements are celebrated here.\n```' +
+      DIVIDER
   };
 
   return new EmbedBuilder()
@@ -274,27 +297,29 @@ export function createChannelSelectEmbed(type) {
 
 export function createRoleSelectEmbed(type) {
   const titles = {
-    verifier: '👥 Set Verifier Role',
-    admin: '⭐ Set Admin Role'
+    verifier: '**Beyond the Board - Setup Verifier Role**',
+    admin: '**Beyond the Board - Setup Admin Role**'
   };
 
   const descriptions = {
     verifier: 
-      `${DIVIDER}\n` +
-      '**Verifier Role - Tier 1-8**\n' +
-      '\n' +
+      DIVIDER +
+      '```ansi\n\x1b[36m👥 Verifier Role - Tier 1-8\x1b[0m\n```' +
+      '```\n' +
       '• View verification threads\n' +
       '• Approve or deny submissions\n' +
       '• Award tokens to players\n' +
-      `${DIVIDER}`,
+      '```' +
+      DIVIDER,
     admin: 
-      `${DIVIDER}\n` +
-      '**Admin Role - Tier 9+**\n' +
-      '\n' +
+      DIVIDER +
+      '```ansi\n\x1b[36m⭐ Admin Role - Tier 9+\x1b[0m\n```' +
+      '```\n' +
       '• Conduct Tier 9 live trials\n' +
-      '• Grant Tier 10 status\n' +
+      '• Grant Game Master status (Tier 10)\n' +
       '• Override all verifications\n' +
-      `${DIVIDER}`
+      '```' +
+      DIVIDER
   };
 
   return new EmbedBuilder()
@@ -307,15 +332,33 @@ export function createRoleSelectEmbed(type) {
 
 export function createSuccessEmbed(type, target) {
   const messages = {
-    submission_channel: `${DIVIDER}\nSubmission button posted in ${target}\n${DIVIDER}`,
-    announcement_channel: `${DIVIDER}\nAnnouncements will be posted in ${target}\n${DIVIDER}`,
-    verifier_role: `${DIVIDER}\n${target} can now verify Tier 1-8\n${DIVIDER}`,
-    admin_role: `${DIVIDER}\n${target} can now verify Tier 9+\n${DIVIDER}`
+    submission_channel: 
+      DIVIDER +
+      '```ansi\n\x1b[32m✅ Submission button posted\x1b[0m\n```' +
+      `Channel: ${target}\n` +
+      DIVIDER,
+    announcement_channel: 
+      DIVIDER +
+      '```ansi\n\x1b[32m✅ Announcement channel set\x1b[0m\n```' +
+      `Channel: ${target}\n` +
+      DIVIDER,
+    verifier_role: 
+      DIVIDER +
+      '```ansi\n\x1b[32m✅ Verifier role configured\x1b[0m\n```' +
+      `Role: ${target}\n` +
+      `Access: Tier 1-8\n` +
+      DIVIDER,
+    admin_role: 
+      DIVIDER +
+      '```ansi\n\x1b[32m✅ Admin role configured\x1b[0m\n```' +
+      `Role: ${target}\n` +
+      `Access: Tier 9+ and Game Master\n` +
+      DIVIDER
   };
 
   return new EmbedBuilder()
     .setColor(COLORS.SUCCESS)
-    .setTitle('✅ Configuration Updated')
+    .setTitle('**Configuration Updated**')
     .setDescription(messages[type])
     .setFooter({ text: '『  』' })
     .setTimestamp();
