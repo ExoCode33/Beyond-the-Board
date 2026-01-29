@@ -19,20 +19,21 @@ export async function execute(interaction) {
   const gameOptions = games.map(g => ({
     label: g.displayName,
     value: g.name,
-    description: `${g.totalAchievements} achievements`
+    description: `${g.totalAchievements} achievements`,
+    emoji: '🎮'
   }));
 
   const selectMenu = new StringSelectMenuBuilder()
     .setCustomId('viewach_select_game')
-    .setPlaceholder('Select a game')
+    .setPlaceholder('🎮 Select a game to browse')
     .addOptions(gameOptions);
 
   const row = new ActionRowBuilder().addComponents(selectMenu);
 
   const embed = new EmbedBuilder()
-    .setColor('#5865F2')
-    .setTitle('🎮 View Achievements')
-    .setDescription('Select a game to browse its achievements:')
+    .setColor('#00FFFF')
+    .setTitle('🎮 Browse Achievements')
+    .setDescription('Select a game to view all available achievements and your progress.')
     .setTimestamp();
 
   await interaction.editReply({
@@ -79,9 +80,13 @@ export async function execute(interaction) {
     }
 
     const embed = new EmbedBuilder()
-      .setColor('#5865F2')
-      .setTitle(`🎮 ${game.displayName} - Achievements`)
-      .setDescription(`**Your Tier:** ${currentTier}\n**Tokens:** ${progress.tokens} 🪙\n\n`)
+      .setColor('#00FFFF')
+      .setTitle(`🎮 ${game.displayName}`)
+      .setDescription(
+        `**Your Progress:**\n` +
+        `└ Current Tier: **${currentTier}**/10\n` +
+        `└ Tokens: **${progress.tokens}** 🪙\n\u200b`
+      )
       .setTimestamp();
 
     for (let tier = 1; tier <= 8; tier++) {
@@ -91,21 +96,34 @@ export async function execute(interaction) {
       let tierText = '';
       for (const ach of tierAchs) {
         let statusEmoji = '⭕';
-        if (ach.locked) statusEmoji = '🔒';
-        else if (ach.userStatus === 'approved') statusEmoji = '✅';
-        else if (ach.userStatus === 'pending') statusEmoji = '⏳';
-        else if (ach.userStatus === 'rejected') statusEmoji = '❌';
-
-        tierText += `${statusEmoji} **${ach.name}** - ${ach.tokenReward} tokens\n`;
+        let statusText = '';
+        
         if (ach.locked) {
-          tierText += `   🔒 *Locked*\n`;
-        } else {
-          tierText += `   ${ach.description}\n`;
+          statusEmoji = '🔒';
+          statusText = ' *[LOCKED]*';
+        } else if (ach.userStatus === 'approved') {
+          statusEmoji = '✅';
+          statusText = ' *[COMPLETED]*';
+        } else if (ach.userStatus === 'pending') {
+          statusEmoji = '⏳';
+          statusText = ' *[PENDING]*';
+        } else if (ach.userStatus === 'rejected') {
+          statusEmoji = '❌';
+          statusText = ' *[DENIED]*';
         }
+
+        tierText += `${statusEmoji} **${ach.name}**${statusText}\n`;
+        if (!ach.locked) {
+          tierText += `   └ ${ach.description}\n`;
+          tierText += `   └ Reward: **${ach.tokenReward}** 🪙\n`;
+        } else {
+          tierText += `   └ Complete Tier ${tier - 1} to unlock\n`;
+        }
+        tierText += '\u200b\n';
       }
 
       embed.addFields({
-        name: `Tier ${tier}`,
+        name: `═══ Tier ${tier} ═══`,
         value: tierText || 'No achievements',
         inline: false
       });
