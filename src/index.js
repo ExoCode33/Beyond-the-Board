@@ -420,4 +420,17 @@ async function init() {
     await gameLoader.loadGames();
 
     console.log('\n⚙️  Commands:');
-    await loadCommand
+    await loadCommands();
+    await deployCommands();
+
+    console.log('\n🔐 Logging in...');
+    await client.login(process.env.DISCORD_TOKEN);
+  } catch (error) {
+    console.error('❌ Fatal error:', error);
+    process.exit(1);
+  }
+}
+
+init();
+
+export default client;
