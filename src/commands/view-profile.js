@@ -171,4 +171,40 @@ export async function execute(interaction) {
       const game = gameLoader.getGame(prog.game_name);
       const displayName = game ? game.displayName : prog.game_name;
       
-      const tierBar = '█'.repeat(prog.current_tier) + '░'.r
+      const tierBar = '█'.repeat(prog.current_tier) + '░'.repeat(10 - prog.current_tier);
+      
+      embed.addFields({
+        name: `${displayName}`,
+        value: 
+          `**Tier:** ${prog.current_tier}/10\n` +
+          `${tierBar}\n` +
+          `**Tokens:** ${prog.tokens} 🪙`,
+        inline: true
+      });
+    }
+
+    const gameOptions = allProgress.map(prog => {
+      const game = gameLoader.getGame(prog.game_name);
+      const displayName = game ? game.displayName : prog.game_name;
+      
+      return {
+        label: displayName,
+        value: prog.game_name,
+        description: `Tier ${prog.current_tier}/10 • ${prog.tokens} tokens`,
+        emoji: '🎮'
+      };
+    });
+
+    const selectMenu = new StringSelectMenuBuilder()
+      .setCustomId('profile_select_game')
+      .setPlaceholder('🎮 Select game for detailed view')
+      .addOptions(gameOptions);
+
+    const row = new ActionRowBuilder().addComponents(selectMenu);
+
+    await i.editReply({
+      embeds: [embed],
+      components: [row]
+    });
+  });
+}
