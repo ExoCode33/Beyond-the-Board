@@ -9,13 +9,16 @@ const COLORS = {
   GOLD: 0xFFD700,
 };
 
+// Try blue ANSI which renders closer to purple in Discord
+const PURPLE_LINE = '\x1b[34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m';
+
 export function createSubmissionEmbed() {
   const embed = new EmbedBuilder()
-    .setColor(COLORS.CYAN)
+    .setColor(COLORS.PURPLE) // Changed embed color to purple
     .setTitle('Beyond the Board - Achievements')
     .setDescription(
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '📝 How It Works\n' +
       '\n' +
@@ -24,7 +27,7 @@ export function createSubmissionEmbed() {
       '3 → Choose an achievement\n' +
       '4 → Upload proof in thread\n' +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '⚔️ Tier System\n' +
       '\n' +
@@ -32,7 +35,7 @@ export function createSubmissionEmbed() {
       '\x1b[36mTier 9:\x1b[0m    Live admin trial (costs tokens)\n' +
       '\x1b[36mTier 10:\x1b[0m   Game Master (admin granted)\n' +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '⚡ Rules\n' +
       '\n' +
@@ -77,22 +80,22 @@ export function createAnnouncementEmbed(user, achievement, totalTokens, gameName
     .setTitle('Achievement Unlocked')
     .setDescription(
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       `🏆 ${user.username} completed a challenge\n` +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       `\x1b[36m🎮 Game:\x1b[0m      ${gameName}\n` +
       `\x1b[36m⭐ Achievement:\x1b[0m ${achievement.name}\n` +
       `\x1b[36m🛡️ Tier:\x1b[0m      ${achievement.tier}\n` +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       `\x1b[33m🪙 Tokens Earned:\x1b[0m +${achievement.tokenReward}\n` +
       `\x1b[33m💎 Total Tokens:\x1b[0m  ${totalTokens}\n` +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```'
     )
     .setThumbnail(user.displayAvatarURL({ size: 256 }))
@@ -102,11 +105,11 @@ export function createAnnouncementEmbed(user, achievement, totalTokens, gameName
 
 export function createConfigEmbed(config) {
   return new EmbedBuilder()
-    .setColor(COLORS.CYAN)
+    .setColor(COLORS.PURPLE)
     .setTitle('Beyond the Board - Configuration')
     .setDescription(
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '⚙️ Server Settings\n' +
       '\n' +
@@ -116,7 +119,7 @@ export function createConfigEmbed(config) {
       `\x1b[36m📢 Announcement Channel:\x1b[0m\n` +
       `   ${config?.announcement_channel_id ? `<#${config.announcement_channel_id}>` : 'Not set'}\n` +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       `\x1b[36m👥 Verifier Role:\x1b[0m\n` +
       `   ${config?.verifier_role_id ? `<@&${config.verifier_role_id}>` : 'Not set'}\n` +
@@ -124,7 +127,7 @@ export function createConfigEmbed(config) {
       `\x1b[36m⭐ Admin Role:\x1b[0m\n` +
       `   ${config?.admin_role_id ? `<@&${config.admin_role_id}>` : 'Not set'}\n` +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```'
     )
     .setFooter({ text: '『  』 • Select an action below' })
@@ -140,17 +143,17 @@ export function createProfileEmbed(user, allProgress) {
   if (allProgress.length === 0) {
     embed.setDescription(
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '\x1b[31mNo active games\x1b[0m\n' +
       '\n' +
       'Submit your first achievement to begin!\n' +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```'
     );
   } else {
-    let description = '```ansi\n\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n';
+    let description = '```ansi\n' + PURPLE_LINE + '\n';
     
     for (const prog of allProgress) {
       const tierBar = '▰'.repeat(prog.current_tier) + '▱'.repeat(10 - prog.current_tier);
@@ -162,7 +165,7 @@ export function createProfileEmbed(user, allProgress) {
       description += `${tierBar}\n`;
       description += `\x1b[33m🪙 Tokens:\x1b[0m ${prog.tokens}\n`;
       description += '\n';
-      description += '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n';
+      description += PURPLE_LINE + '\n';
     }
     
     description += '```';
@@ -181,12 +184,12 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
     .setTitle(`${game.displayName}`)
     .setDescription(
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       `\x1b[36m🛡️ Tier:\x1b[0m   ${progress.current_tier}/10\n` +
       `\x1b[33m🪙 Tokens:\x1b[0m ${progress.tokens}\n` +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```'
     )
     .setThumbnail(user.displayAvatarURL());
@@ -204,7 +207,7 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
     tierText += `Progress: ${completed}/${total} (${percentage}%)\n`;
     tierText += `${progressBar}\n`;
     tierText += '\n';
-    tierText += '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n';
+    tierText += PURPLE_LINE + '\n';
     tierText += '```\n';
 
     for (const ach of achievements) {
@@ -236,16 +239,16 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
 
 export function createAchievementListEmbed(game, progress, achievements) {
   const embed = new EmbedBuilder()
-    .setColor(COLORS.CYAN)
+    .setColor(COLORS.PURPLE)
     .setTitle(`${game.displayName} - Achievements`)
     .setDescription(
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       `\x1b[36m🛡️ Your Tier:\x1b[0m ${progress.current_tier}/10\n` +
       `\x1b[33m🪙 Tokens:\x1b[0m   ${progress.tokens}\n` +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```'
     );
 
@@ -269,7 +272,7 @@ export function createAchievementListEmbed(game, progress, achievements) {
       tierText += '\n';
     }
 
-    tierText += '```ansi\n\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n```';
+    tierText += '```ansi\n' + PURPLE_LINE + '\n```';
 
     embed.addFields({
       name: `Tier ${tier}`,
@@ -293,7 +296,7 @@ export function createChannelSelectEmbed(type) {
   const descriptions = {
     submission: 
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '📋 Submission Channel\n' +
       '\n' +
@@ -301,11 +304,11 @@ export function createChannelSelectEmbed(type) {
       '\n' +
       'Players click this button to begin.\n' +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```',
     announcement: 
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '📢 Announcement Channel\n' +
       '\n' +
@@ -313,12 +316,12 @@ export function createChannelSelectEmbed(type) {
       '\n' +
       'Completed achievements are celebrated here.\n' +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```'
   };
 
   return new EmbedBuilder()
-    .setColor(COLORS.CYAN)
+    .setColor(COLORS.PURPLE)
     .setTitle(titles[type])
     .setDescription(descriptions[type])
     .setFooter({ text: '『  』 • Select from dropdown' })
@@ -334,7 +337,7 @@ export function createRoleSelectEmbed(type) {
   const descriptions = {
     verifier: 
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '👥 Verifier Role - Tier 1-8\n' +
       '\n' +
@@ -342,11 +345,11 @@ export function createRoleSelectEmbed(type) {
       '• Approve or deny submissions\n' +
       '• Award tokens to players\n' +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```',
     admin: 
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '⭐ Admin Role - Tier 9+\n' +
       '\n' +
@@ -354,7 +357,7 @@ export function createRoleSelectEmbed(type) {
       '• Grant Game Master status (Tier 10)\n' +
       '• Override all verifications\n' +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```'
   };
 
@@ -370,45 +373,45 @@ export function createSuccessEmbed(type, target) {
   const messages = {
     submission_channel: 
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '\x1b[32m✅ Submission button posted\x1b[0m\n' +
       '\n' +
       `Channel: ${target}\n` +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```',
     announcement_channel: 
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '\x1b[32m✅ Announcement channel set\x1b[0m\n' +
       '\n' +
       `Channel: ${target}\n` +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```',
     verifier_role: 
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '\x1b[32m✅ Verifier role configured\x1b[0m\n' +
       '\n' +
       `Role: ${target}\n` +
       'Access: Tier 1-8\n' +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```',
     admin_role: 
       '```ansi\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '\n' +
       '\x1b[32m✅ Admin role configured\x1b[0m\n' +
       '\n' +
       `Role: ${target}\n` +
       'Access: Tier 9+ and Game Master\n' +
       '\n' +
-      '\x1b[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      PURPLE_LINE + '\n' +
       '```'
   };
 
