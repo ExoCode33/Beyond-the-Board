@@ -12,25 +12,34 @@ const COLORS = {
 export function createSubmissionEmbed() {
   const embed = new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle('**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭𝐬**')
+    .setTitle('**𝐒𝐮𝐛𝐦𝐢𝐭 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭𝐬**')
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m📝 How It Works\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;37m📝 𝐇𝐨𝐰 𝐈𝐭 𝐖𝐨𝐫𝐤𝐬\x1b[0m\n' +
+      '\n' +
       '\x1b[0;37m1\x1b[0m → Click button below\n' +
       '\x1b[0;37m2\x1b[0m → Select your game\n' +
       '\x1b[0;37m3\x1b[0m → Choose achievement\n' +
       '\x1b[0;37m4\x1b[0m → Upload proof\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m⚔️ Tier System\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;37m⚔️ 𝐓𝐢𝐞𝐫 𝐒𝐲𝐬𝐭𝐞𝐦\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36mTiers 1-8:\x1b[0m  Complete 100% to unlock\n' +
       '\x1b[1;35mTier 9:\x1b[0m     Live trial \x1b[2;37m(costs tokens)\x1b[0m\n' +
-      '\x1b[1;33mTier 10:\x1b[0m    Game Master \x1b[2;37m(admin only)\x1b[0m\n' +
+      '\x1b[1;33mTier 10:\x1b[0m    Game Master\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m⚡ Rules\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;37m⚡ 𝐑𝐮𝐥𝐞𝐬\x1b[0m\n' +
+      '\n' +
       '\x1b[1;32m+\x1b[0m Max \x1b[1;33m3\x1b[0m pending submissions\n' +
       '\x1b[1;32m+\x1b[0m Cross-server progress\n' +
       '\x1b[1;32m+\x1b[0m \x1b[1;33m72h\x1b[0m cooldown on Tier 9 denials\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
     )
