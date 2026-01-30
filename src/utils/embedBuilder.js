@@ -11,8 +11,8 @@ const COLORS = {
 
 export function createSubmissionEmbed() {
   const embed = new EmbedBuilder()
-    .setColor(COLORS.CYAN)
-    .setTitle('Beyond the Board - Achievements')
+    .setColor(COLORS.PURPLE)
+    .setTitle('**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭𝐬**')
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
@@ -67,7 +67,7 @@ export function createVerificationButtons(threadId) {
 export function createAnnouncementEmbed(user, achievement, totalTokens, gameName) {
   return new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle('🏆 Achievement Unlocked')
+    .setTitle('**🏆 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭 𝐔𝐧𝐥𝐨𝐜𝐤𝐞𝐝**')
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
@@ -89,8 +89,8 @@ export function createAnnouncementEmbed(user, achievement, totalTokens, gameName
 
 export function createConfigEmbed(config) {
   return new EmbedBuilder()
-    .setColor(COLORS.CYAN)
-    .setTitle('Beyond the Board - Configuration')
+    .setColor(COLORS.PURPLE)
+    .setTitle('**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐂𝐨𝐧𝐟𝐢𝐠𝐮𝐫𝐚𝐭𝐢𝐨𝐧**')
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
@@ -117,7 +117,7 @@ export function createConfigEmbed(config) {
 export function createProfileEmbed(user, allProgress) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`${user.username}'s Profile`)
+    .setTitle(`**${user.username}'𝐬 𝐏𝐫𝐨𝐟𝐢𝐥𝐞**`)
     .setThumbnail(user.displayAvatarURL({ size: 256 }));
 
   if (allProgress.length === 0) {
@@ -156,7 +156,7 @@ export function createProfileEmbed(user, allProgress) {
 export function createDetailedProfileEmbed(user, game, progress, tierAchievements) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`${game.displayName}`)
+    .setTitle(`**${game.displayName} - 𝐏𝐫𝐨𝐠𝐫𝐞𝐬𝐬**`)
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
@@ -197,7 +197,7 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
     }
 
     embed.addFields({
-      name: `**Tier ${tier}**`,
+      name: `**𝐓𝐢𝐞𝐫 ${tier}**`,
       value: tierText,
       inline: false
     });
@@ -211,8 +211,8 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
 
 export function createAchievementListEmbed(game, progress, achievements) {
   const embed = new EmbedBuilder()
-    .setColor(COLORS.CYAN)
-    .setTitle(`${game.displayName} - Achievements`)
+    .setColor(COLORS.PURPLE)
+    .setTitle(`**${game.displayName} - 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭𝐬**`)
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
@@ -258,7 +258,7 @@ export function createAchievementListEmbed(game, progress, achievements) {
     tierText += '```ansi\n\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n```';
 
     embed.addFields({
-      name: `**Tier ${tier}**`,
+      name: `**𝐓𝐢𝐞𝐫 ${tier}**`,
       value: tierText,
       inline: false
     });
@@ -272,8 +272,8 @@ export function createAchievementListEmbed(game, progress, achievements) {
 
 export function createChannelSelectEmbed(type) {
   const titles = {
-    submission: 'Beyond the Board - Setup',
-    announcement: 'Beyond the Board - Setup'
+    submission: '**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐒𝐞𝐭𝐮𝐩**',
+    announcement: '**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐒𝐞𝐭𝐮𝐩**'
   };
 
   const descriptions = {
@@ -304,7 +304,7 @@ export function createChannelSelectEmbed(type) {
   };
 
   return new EmbedBuilder()
-    .setColor(COLORS.CYAN)
+    .setColor(COLORS.PURPLE)
     .setTitle(titles[type])
     .setDescription(descriptions[type])
     .setFooter({ text: '『  』 • Select from dropdown' })
@@ -313,8 +313,8 @@ export function createChannelSelectEmbed(type) {
 
 export function createRoleSelectEmbed(type) {
   const titles = {
-    verifier: 'Beyond the Board - Setup',
-    admin: 'Beyond the Board - Setup'
+    verifier: '**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐒𝐞𝐭𝐮𝐩**',
+    admin: '**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐒𝐞𝐭𝐮𝐩**'
   };
 
   const descriptions = {
@@ -399,9 +399,63 @@ export function createSuccessEmbed(type, target) {
   };
 
   return new EmbedBuilder()
-    .setColor(COLORS.SUCCESS)
-    .setTitle('Configuration Updated')
+    .setColor(COLORS.PURPLE)
+    .setTitle('**𝐂𝐨𝐧𝐟𝐢𝐠𝐮𝐫𝐚𝐭𝐢𝐨𝐧 𝐔𝐩𝐝𝐚𝐭𝐞𝐝**')
     .setDescription(messages[type])
     .setFooter({ text: '『  』' })
+    .setTimestamp();
+}
+
+// Additional embeds for game selection
+export function createGameSelectionEmbed(games) {
+  return new EmbedBuilder()
+    .setColor(COLORS.PURPLE)
+    .setTitle('**𝐒𝐞𝐥𝐞𝐜𝐭 𝐚 𝐆𝐚𝐦𝐞**')
+    .setDescription(
+      '```ansi\n' +
+      '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\x1b[1;37m🎮 Available Games\x1b[0m\n' +
+      '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '```\n' +
+      'Choose a game to view or submit achievements.'
+    )
+    .setFooter({ text: '『  』 • Select from dropdown' })
+    .setTimestamp();
+}
+
+export function createAchievementSelectionEmbed(game, tierAchievements) {
+  return new EmbedBuilder()
+    .setColor(COLORS.PURPLE)
+    .setTitle(`**${game.displayName} - 𝐒𝐞𝐥𝐞𝐜𝐭 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭**`)
+    .setDescription(
+      '```ansi\n' +
+      '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\x1b[1;37m⭐ Available Achievements\x1b[0m\n' +
+      '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '```\n' +
+      `${tierAchievements.length} achievement(s) available in your current tier.`
+    )
+    .setFooter({ text: '『  』 • Select from dropdown' })
+    .setTimestamp();
+}
+
+export function createVerificationEmbed(achievement, game, user) {
+  return new EmbedBuilder()
+    .setColor(COLORS.PURPLE)
+    .setTitle(`**𝐕𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧 𝐑𝐞𝐪𝐮𝐢𝐫𝐞𝐝**`)
+    .setDescription(
+      '```ansi\n' +
+      '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      `\x1b[1;37m${achievement.name}\x1b[0m\n` +
+      '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '```\n' +
+      `**User:** ${user.username}\n` +
+      `**Game:** ${game.displayName}\n` +
+      `**Tier:** ${achievement.tier}\n` +
+      `**Reward:** ${achievement.tokenReward} 🪙\n\n` +
+      `**Description:**\n${achievement.description}\n\n` +
+      `**Requirements:**\n${achievement.imageRequirements.map((req, i) => `${i + 1}. ${req}`).join('\n')}`
+    )
+    .setFooter({ text: '『  』 • Review and verify' })
     .setTimestamp();
 }
