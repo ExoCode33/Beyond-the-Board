@@ -17,7 +17,7 @@ export function createSubmissionEmbed() {
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\n' +
-      '\x1b[1;37m📝 𝐇𝐨𝐰 𝐈𝐭 𝐖𝐨𝐫𝐤𝐬\x1b[0m\n' +
+      '\x1b[1;37m📝 𝐆𝐚𝐦𝐞 𝐒𝐭𝐚𝐫𝐭\x1b[0m\n' +
       '\n' +
       '\x1b[0;37m1\x1b[0m → Click button below\n' +
       '\x1b[0;37m2\x1b[0m → Select your game\n' +
@@ -28,17 +28,18 @@ export function createSubmissionEmbed() {
       '\n' +
       '\x1b[1;37m⚔️ 𝐓𝐢𝐞𝐫 𝐒𝐲𝐬𝐭𝐞𝐦\x1b[0m\n' +
       '\n' +
-      '\x1b[1;36mTiers 1-8:\x1b[0m  Complete 100% to unlock\n' +
-      '\x1b[1;35mTier 9:\x1b[0m     Live trial \x1b[2;37m(costs tokens)\x1b[0m\n' +
-      '\x1b[1;33mTier 10:\x1b[0m    Game Master\n' +
+      '\x1b[1;33mTier 10:\x1b[0m Game Master \x1b[2;37m(God of Games)\x1b[0m\n' +
+      '\x1b[1;33mTier 9:\x1b[0m  Blank \x1b[2;37m(Undefeated)\x1b[0m\n' +
+      '\x1b[1;36mTier 8:\x1b[0m  Grandmaster\n' +
+      '\x1b[1;36mTier 7:\x1b[0m  Master Tactician\n' +
+      '\x1b[1;36mTier 6:\x1b[0m  Strategist\n' +
+      '\x1b[1;36mTier 5:\x1b[0m  Tactician\n' +
+      '\x1b[1;36mTier 4:\x1b[0m  Analyst\n' +
+      '\x1b[1;36mTier 3:\x1b[0m  Planner\n' +
+      '\x1b[1;36mTier 2:\x1b[0m  Thinker\n' +
+      '\x1b[1;36mTier 1:\x1b[0m  Novice\n' +
       '\n' +
-      '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
-      '\x1b[1;37m⚡ 𝐑𝐮𝐥𝐞𝐬\x1b[0m\n' +
-      '\n' +
-      '\x1b[1;32m+\x1b[0m Max \x1b[1;33m3\x1b[0m pending submissions\n' +
-      '\x1b[1;32m+\x1b[0m Cross-server progress\n' +
-      '\x1b[1;32m+\x1b[0m \x1b[1;33m72h\x1b[0m cooldown on Tier 9 denials\n' +
+      '\x1b[2;37mComplete 100% of tier to unlock next\x1b[0m\n' +
       '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
@@ -415,7 +416,7 @@ export function createSuccessEmbed(type, target) {
     .setTimestamp();
 }
 
-// Additional embeds for game selection
+// Additional embeds
 export function createGameSelectionEmbed(games) {
   return new EmbedBuilder()
     .setColor(COLORS.PURPLE)
