@@ -16,31 +16,24 @@ export function createSubmissionEmbed() {
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
       '\x1b[1;37m📝 𝐆𝐚𝐦𝐞 𝐒𝐭𝐚𝐫𝐭\x1b[0m\n' +
-      '\n' +
       '\x1b[0;37m1\x1b[0m → Click button below\n' +
       '\x1b[0;37m2\x1b[0m → Select your game\n' +
       '\x1b[0;37m3\x1b[0m → Choose achievement\n' +
       '\x1b[0;37m4\x1b[0m → Upload proof\n' +
-      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
-      '\x1b[1;37m⚔️ 𝐓𝐢𝐞𝐫 𝐒𝐲𝐬𝐭𝐞𝐦\x1b[0m\n' +
-      '\n' +
-      '\x1b[1;33mTier 10:\x1b[0m Game Master \x1b[2;37m(God of Games)\x1b[0m\n' +
+      '\x1b[1;37m⚔️ 𝐀𝐬𝐜𝐞𝐧𝐬𝐢𝐨𝐧 𝐏𝐚𝐭𝐡\x1b[0m\n' +
+      '\x1b[0;37mTier 1:\x1b[0m  Novice\n' +
+      '\x1b[0;37mTier 2:\x1b[0m  Thinker\n' +
+      '\x1b[0;32mTier 3:\x1b[0m  Planner\n' +
+      '\x1b[0;32mTier 4:\x1b[0m  Analyst\n' +
+      '\x1b[0;36mTier 5:\x1b[0m  Tactician\n' +
+      '\x1b[0;36mTier 6:\x1b[0m  Strategist\n' +
+      '\x1b[1;35mTier 7:\x1b[0m  Master Tactician\n' +
+      '\x1b[1;35mTier 8:\x1b[0m  Grandmaster\n' +
       '\x1b[1;33mTier 9:\x1b[0m  Blank \x1b[2;37m(Undefeated)\x1b[0m\n' +
-      '\x1b[1;36mTier 8:\x1b[0m  Grandmaster\n' +
-      '\x1b[1;36mTier 7:\x1b[0m  Master Tactician\n' +
-      '\x1b[1;36mTier 6:\x1b[0m  Strategist\n' +
-      '\x1b[1;36mTier 5:\x1b[0m  Tactician\n' +
-      '\x1b[1;36mTier 4:\x1b[0m  Analyst\n' +
-      '\x1b[1;36mTier 3:\x1b[0m  Planner\n' +
-      '\x1b[1;36mTier 2:\x1b[0m  Thinker\n' +
-      '\x1b[1;36mTier 1:\x1b[0m  Novice\n' +
-      '\n' +
-      '\x1b[2;37mComplete 100% of tier to unlock next\x1b[0m\n' +
-      '\n' +
+      '\x1b[1;33mTier 10:\x1b[0m Game Master \x1b[2;37m(God of Games)\x1b[0m\n' +
+      '\x1b[2;37mComplete 100% to unlock next tier\x1b[0m\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
     )
@@ -108,13 +101,11 @@ export function createConfigEmbed(config) {
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       `\x1b[1;36m📋 Submission:\x1b[0m\n` +
       `   ${config?.submission_channel_id ? `<#${config.submission_channel_id}>` : '\x1b[2;31mNot set\x1b[0m'}\n` +
-      '\n' +
       `\x1b[1;36m📢 Announcements:\x1b[0m\n` +
       `   ${config?.announcement_channel_id ? `<#${config.announcement_channel_id}>` : '\x1b[2;31mNot set\x1b[0m'}\n` +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       `\x1b[1;35m👥 Verifier:\x1b[0m \x1b[2;37m(Tier 1-8)\x1b[0m\n` +
       `   ${config?.verifier_role_id ? `<@&${config.verifier_role_id}>` : '\x1b[2;31mNot set\x1b[0m'}\n` +
-      '\n' +
       `\x1b[1;33m⭐ Admin:\x1b[0m \x1b[2;37m(Tier 9+)\x1b[0m\n` +
       `   ${config?.admin_role_id ? `<@&${config.admin_role_id}>` : '\x1b[2;31mNot set\x1b[0m'}\n` +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
@@ -135,7 +126,6 @@ export function createProfileEmbed(user, allProgress) {
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\x1b[1;31mNo active games\x1b[0m\n' +
-      '\n' +
       'Submit first achievement to begin!\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
@@ -292,11 +282,8 @@ export function createChannelSelectEmbed(type) {
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\x1b[1;37m📋 Submission Channel\x1b[0m\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
       'Select channel for submission button.\n' +
-      '\n' +
       'Players click to submit achievements.\n' +
-      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     announcement: 
@@ -304,11 +291,8 @@ export function createChannelSelectEmbed(type) {
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\x1b[1;37m📢 Announcement Channel\x1b[0m\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
       'Select channel for announcements.\n' +
-      '\n' +
       'Achievements celebrated here.\n' +
-      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
   };
@@ -333,11 +317,9 @@ export function createRoleSelectEmbed(type) {
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\x1b[1;35m👥 Verifier Role\x1b[0m \x1b[2;37m(Tier 1-8)\x1b[0m\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
       '\x1b[1;32m•\x1b[0m View verification threads\n' +
       '\x1b[1;32m•\x1b[0m Approve/deny submissions\n' +
       '\x1b[1;32m•\x1b[0m Award tokens\n' +
-      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     admin: 
@@ -345,11 +327,9 @@ export function createRoleSelectEmbed(type) {
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\x1b[1;33m⭐ Admin Role\x1b[0m \x1b[2;37m(Tier 9+)\x1b[0m\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
       '\x1b[1;32m•\x1b[0m Conduct Tier 9 trials\n' +
       '\x1b[1;32m•\x1b[0m Grant Game Master status\n' +
       '\x1b[1;32m•\x1b[0m Override verifications\n' +
-      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
   };
@@ -369,9 +349,7 @@ export function createSuccessEmbed(type, target) {
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\x1b[1;32m✅ Submission button posted\x1b[0m\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
       `\x1b[1;36mChannel:\x1b[0m ${target}\n` +
-      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     announcement_channel: 
@@ -379,9 +357,7 @@ export function createSuccessEmbed(type, target) {
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\x1b[1;32m✅ Announcement channel set\x1b[0m\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
       `\x1b[1;36mChannel:\x1b[0m ${target}\n` +
-      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     verifier_role: 
@@ -389,10 +365,8 @@ export function createSuccessEmbed(type, target) {
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\x1b[1;32m✅ Verifier role set\x1b[0m\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
       `\x1b[1;36mRole:\x1b[0m   ${target}\n` +
       `\x1b[1;36mAccess:\x1b[0m Tier 1-8\n` +
-      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     admin_role: 
@@ -400,10 +374,8 @@ export function createSuccessEmbed(type, target) {
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '\x1b[1;32m✅ Admin role set\x1b[0m\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\n' +
       `\x1b[1;36mRole:\x1b[0m   ${target}\n` +
       `\x1b[1;36mAccess:\x1b[0m Tier 9 + Game Master\n` +
-      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
   };
