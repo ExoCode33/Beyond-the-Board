@@ -30,16 +30,12 @@ export function createSubmissionEmbed() {
       '\n' +
       '\x1b[0;37mTier 1:\x1b[0m  Novice\n' +
       '\x1b[0;37mTier 2:\x1b[0m  Thinker\n' +
-      '\n' +
       '\x1b[0;32mTier 3:\x1b[0m  Planner\n' +
       '\x1b[0;32mTier 4:\x1b[0m  Analyst\n' +
-      '\n' +
       '\x1b[0;36mTier 5:\x1b[0m  Tactician\n' +
       '\x1b[0;36mTier 6:\x1b[0m  Strategist\n' +
-      '\n' +
       '\x1b[1;35mTier 7:\x1b[0m  Master Tactician\n' +
       '\x1b[1;35mTier 8:\x1b[0m  Grandmaster\n' +
-      '\n' +
       '\x1b[1;33mTier 9:\x1b[0m  Blank \x1b[2;37m(Undefeated)\x1b[0m\n' +
       '\x1b[1;33mTier 10:\x1b[0m Game Master \x1b[2;37m(God of Games)\x1b[0m\n' +
       '\n' +
