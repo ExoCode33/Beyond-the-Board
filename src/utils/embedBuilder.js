@@ -12,28 +12,39 @@ const COLORS = {
 export function createSubmissionEmbed() {
   const embed = new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle('**𝐒𝐮𝐛𝐦𝐢𝐭 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭𝐬**')
+    .setTitle('**𝓢𝓾𝓫𝓶𝓲𝓽 𝓐𝓬𝓱𝓲𝓮𝓿𝓮𝓶𝓮𝓷𝓽𝓼**')
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m📝 𝐆𝐚𝐦𝐞 𝐒𝐭𝐚𝐫𝐭\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;36m📝 Game Start\x1b[0m\n' +
+      '\n' +
       '\x1b[0;37m1\x1b[0m → Click button below\n' +
       '\x1b[0;37m2\x1b[0m → Select your game\n' +
       '\x1b[0;37m3\x1b[0m → Choose achievement\n' +
       '\x1b[0;37m4\x1b[0m → Upload proof\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m⚔️ 𝐀𝐬𝐜𝐞𝐧𝐬𝐢𝐨𝐧 𝐏𝐚𝐭𝐡\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;36m⚔️ Ascension Path\x1b[0m\n' +
+      '\n' +
       '\x1b[0;37mTier 1:\x1b[0m  Novice\n' +
       '\x1b[0;37mTier 2:\x1b[0m  Thinker\n' +
+      '\n' +
       '\x1b[0;32mTier 3:\x1b[0m  Planner\n' +
       '\x1b[0;32mTier 4:\x1b[0m  Analyst\n' +
+      '\n' +
       '\x1b[0;36mTier 5:\x1b[0m  Tactician\n' +
       '\x1b[0;36mTier 6:\x1b[0m  Strategist\n' +
+      '\n' +
       '\x1b[1;35mTier 7:\x1b[0m  Master Tactician\n' +
       '\x1b[1;35mTier 8:\x1b[0m  Grandmaster\n' +
+      '\n' +
       '\x1b[1;33mTier 9:\x1b[0m  Blank \x1b[2;37m(Undefeated)\x1b[0m\n' +
       '\x1b[1;33mTier 10:\x1b[0m Game Master \x1b[2;37m(God of Games)\x1b[0m\n' +
+      '\n' +
       '\x1b[2;37mComplete 100% to unlock next tier\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
     )
@@ -70,18 +81,24 @@ export function createVerificationButtons(threadId) {
 export function createAnnouncementEmbed(user, achievement, totalTokens, gameName) {
   return new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle('**🏆 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭 𝐔𝐧𝐥𝐨𝐜𝐤𝐞𝐝**')
+    .setTitle('**🏆 𝓐𝓬𝓱𝓲𝓮𝓿𝓮𝓶𝓮𝓷𝓽 𝓤𝓷𝓵𝓸𝓬𝓴𝓮𝓭**')
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;35m${user.username}\x1b[0m completed a challenge!\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;36m🎮 Game:\x1b[0m       ${gameName}\n` +
       `\x1b[1;36m⭐ Achievement:\x1b[0m ${achievement.name}\n` +
       `\x1b[1;36m🛡️ Tier:\x1b[0m       ${achievement.tier}\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;33m🪙 Earned:\x1b[0m  \x1b[1;32m+${achievement.tokenReward}\x1b[0m\n` +
       `\x1b[1;33m💎 Total:\x1b[0m   \x1b[1;37m${totalTokens}\x1b[0m\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
     )
@@ -93,21 +110,29 @@ export function createAnnouncementEmbed(user, achievement, totalTokens, gameName
 export function createConfigEmbed(config) {
   return new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle('**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐂𝐨𝐧𝐟𝐢𝐠𝐮𝐫𝐚𝐭𝐢𝐨𝐧**')
+    .setTitle('**𝓑𝓮𝔂𝓸𝓷𝓭 𝓽𝓱𝓮 𝓑𝓸𝓪𝓻𝓭 - 𝓒𝓸𝓷𝓯𝓲𝓰𝓾𝓻𝓪𝓽𝓲𝓸𝓷**')
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m⚙️ Server Settings\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;36m⚙️ Server Settings\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;36m📋 Submission:\x1b[0m\n` +
       `   ${config?.submission_channel_id ? `<#${config.submission_channel_id}>` : '\x1b[2;31mNot set\x1b[0m'}\n` +
+      '\n' +
       `\x1b[1;36m📢 Announcements:\x1b[0m\n` +
       `   ${config?.announcement_channel_id ? `<#${config.announcement_channel_id}>` : '\x1b[2;31mNot set\x1b[0m'}\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;35m👥 Verifier:\x1b[0m \x1b[2;37m(Tier 1-8)\x1b[0m\n` +
       `   ${config?.verifier_role_id ? `<@&${config.verifier_role_id}>` : '\x1b[2;31mNot set\x1b[0m'}\n` +
+      '\n' +
       `\x1b[1;33m⭐ Admin:\x1b[0m \x1b[2;37m(Tier 9+)\x1b[0m\n` +
       `   ${config?.admin_role_id ? `<@&${config.admin_role_id}>` : '\x1b[2;31mNot set\x1b[0m'}\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
     )
@@ -118,15 +143,18 @@ export function createConfigEmbed(config) {
 export function createProfileEmbed(user, allProgress) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`**${user.username}'𝐬 𝐏𝐫𝐨𝐟𝐢𝐥𝐞**`)
+    .setTitle(`**${user.username}'𝓼 𝓟𝓻𝓸𝓯𝓲𝓵𝓮**`)
     .setThumbnail(user.displayAvatarURL({ size: 256 }));
 
   if (allProgress.length === 0) {
     embed.setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       '\x1b[1;31mNo active games\x1b[0m\n' +
+      '\n' +
       'Submit first achievement to begin!\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
     );
@@ -136,10 +164,12 @@ export function createProfileEmbed(user, allProgress) {
     for (const prog of allProgress) {
       const tierBar = '\x1b[1;35m▰\x1b[0m'.repeat(prog.current_tier) + '\x1b[2;37m▱\x1b[0m'.repeat(10 - prog.current_tier);
       
+      description += '\n';
       description += `\x1b[1;35m🎮 Game:\x1b[0m ${prog.game_name}\n`;
       description += `\x1b[1;36m🛡️ Tier:\x1b[0m  \x1b[1;37m${prog.current_tier}\x1b[0m/10\n`;
       description += `${tierBar}\n`;
       description += `\x1b[1;33m🪙 Tokens:\x1b[0m \x1b[1;37m${prog.tokens}\x1b[0m\n`;
+      description += '\n';
       description += '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n';
     }
     
@@ -156,12 +186,14 @@ export function createProfileEmbed(user, allProgress) {
 export function createDetailedProfileEmbed(user, game, progress, tierAchievements) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`**${game.displayName} - 𝐏𝐫𝐨𝐠𝐫𝐞𝐬𝐬**`)
+    .setTitle(`**${game.displayName} - 𝓟𝓻𝓸𝓰𝓻𝓮𝓼𝓼**`)
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;36m🛡️ Tier:\x1b[0m  \x1b[1;37m${progress.current_tier}\x1b[0m/10\n` +
       `\x1b[1;33m🪙 Tokens:\x1b[0m \x1b[1;37m${progress.tokens}\x1b[0m\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
     )
@@ -197,7 +229,7 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
     }
 
     embed.addFields({
-      name: `**𝐓𝐢𝐞𝐫 ${tier}**`,
+      name: `**𝓣𝓲𝓮𝓻 ${tier}**`,
       value: tierText,
       inline: false
     });
@@ -212,12 +244,14 @@ export function createDetailedProfileEmbed(user, game, progress, tierAchievement
 export function createAchievementListEmbed(game, progress, achievements) {
   const embed = new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`**${game.displayName} - 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭𝐬**`)
+    .setTitle(`**${game.displayName} - 𝓐𝓬𝓱𝓲𝓮𝓿𝓮𝓶𝓮𝓷𝓽𝓼**`)
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;36m🛡️ Tier:\x1b[0m  \x1b[1;37m${progress.current_tier}\x1b[0m/10\n` +
       `\x1b[1;33m🪙 Tokens:\x1b[0m \x1b[1;37m${progress.tokens}\x1b[0m\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
     );
@@ -258,7 +292,7 @@ export function createAchievementListEmbed(game, progress, achievements) {
     tierText += '```ansi\n\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n```';
 
     embed.addFields({
-      name: `**𝐓𝐢𝐞𝐫 ${tier}**`,
+      name: `**𝓣𝓲𝓮𝓻 ${tier}**`,
       value: tierText,
       inline: false
     });
@@ -272,27 +306,37 @@ export function createAchievementListEmbed(game, progress, achievements) {
 
 export function createChannelSelectEmbed(type) {
   const titles = {
-    submission: '**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐒𝐞𝐭𝐮𝐩**',
-    announcement: '**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐒𝐞𝐭𝐮𝐩**'
+    submission: '**𝓑𝓮𝔂𝓸𝓷𝓭 𝓽𝓱𝓮 𝓑𝓸𝓪𝓻𝓭 - 𝓢𝓮𝓽𝓾𝓹**',
+    announcement: '**𝓑𝓮𝔂𝓸𝓷𝓭 𝓽𝓱𝓮 𝓑𝓸𝓪𝓻𝓭 - 𝓢𝓮𝓽𝓾𝓹**'
   };
 
   const descriptions = {
     submission: 
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m📋 Submission Channel\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;36m📋 Submission Channel\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       'Select channel for submission button.\n' +
+      '\n' +
       'Players click to submit achievements.\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     announcement: 
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m📢 Announcement Channel\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;36m📢 Announcement Channel\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       'Select channel for announcements.\n' +
+      '\n' +
       'Achievements celebrated here.\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
   };
@@ -307,29 +351,37 @@ export function createChannelSelectEmbed(type) {
 
 export function createRoleSelectEmbed(type) {
   const titles = {
-    verifier: '**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐒𝐞𝐭𝐮𝐩**',
-    admin: '**𝐁𝐞𝐲𝐨𝐧𝐝 𝐭𝐡𝐞 𝐁𝐨𝐚𝐫𝐝 - 𝐒𝐞𝐭𝐮𝐩**'
+    verifier: '**𝓑𝓮𝔂𝓸𝓷𝓭 𝓽𝓱𝓮 𝓑𝓸𝓪𝓻𝓭 - 𝓢𝓮𝓽𝓾𝓹**',
+    admin: '**𝓑𝓮𝔂𝓸𝓷𝓭 𝓽𝓱𝓮 𝓑𝓸𝓪𝓻𝓭 - 𝓢𝓮𝓽𝓾𝓹**'
   };
 
   const descriptions = {
     verifier: 
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       '\x1b[1;35m👥 Verifier Role\x1b[0m \x1b[2;37m(Tier 1-8)\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       '\x1b[1;32m•\x1b[0m View verification threads\n' +
       '\x1b[1;32m•\x1b[0m Approve/deny submissions\n' +
       '\x1b[1;32m•\x1b[0m Award tokens\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     admin: 
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       '\x1b[1;33m⭐ Admin Role\x1b[0m \x1b[2;37m(Tier 9+)\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       '\x1b[1;32m•\x1b[0m Conduct Tier 9 trials\n' +
       '\x1b[1;32m•\x1b[0m Grant Game Master status\n' +
       '\x1b[1;32m•\x1b[0m Override verifications\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
   };
@@ -347,42 +399,58 @@ export function createSuccessEmbed(type, target) {
     submission_channel: 
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       '\x1b[1;32m✅ Submission button posted\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;36mChannel:\x1b[0m ${target}\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     announcement_channel: 
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       '\x1b[1;32m✅ Announcement channel set\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;36mChannel:\x1b[0m ${target}\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     verifier_role: 
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       '\x1b[1;32m✅ Verifier role set\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;36mRole:\x1b[0m   ${target}\n` +
       `\x1b[1;36mAccess:\x1b[0m Tier 1-8\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```',
     admin_role: 
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       '\x1b[1;32m✅ Admin role set\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;36mRole:\x1b[0m   ${target}\n` +
       `\x1b[1;36mAccess:\x1b[0m Tier 9 + Game Master\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```'
   };
 
   return new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle('**𝐂𝐨𝐧𝐟𝐢𝐠𝐮𝐫𝐚𝐭𝐢𝐨𝐧 𝐔𝐩𝐝𝐚𝐭𝐞𝐝**')
+    .setTitle('**𝓒𝓸𝓷𝓯𝓲𝓰𝓾𝓻𝓪𝓽𝓲𝓸𝓷 𝓤𝓹𝓭𝓪𝓽𝓮𝓭**')
     .setDescription(messages[type])
     .setFooter({ text: '『  』' })
     .setTimestamp();
@@ -392,11 +460,13 @@ export function createSuccessEmbed(type, target) {
 export function createGameSelectionEmbed(games) {
   return new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle('**𝐒𝐞𝐥𝐞𝐜𝐭 𝐚 𝐆𝐚𝐦𝐞**')
+    .setTitle('**𝓢𝓮𝓵𝓮𝓬𝓽 𝓪 𝓖𝓪𝓶𝓮**')
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m🎮 Available Games\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;36m🎮 Available Games\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```\n' +
       'Choose a game to view or submit achievements.'
@@ -408,11 +478,13 @@ export function createGameSelectionEmbed(games) {
 export function createAchievementSelectionEmbed(game, tierAchievements) {
   return new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`**${game.displayName} - 𝐒𝐞𝐥𝐞𝐜𝐭 𝐀𝐜𝐡𝐢𝐞𝐯𝐞𝐦𝐞𝐧𝐭**`)
+    .setTitle(`**${game.displayName} - 𝓢𝓮𝓵𝓮𝓬𝓽 𝓐𝓬𝓱𝓲𝓮𝓿𝓮𝓶𝓮𝓷𝓽**`)
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
-      '\x1b[1;37m⭐ Available Achievements\x1b[0m\n' +
+      '\n' +
+      '\x1b[1;36m⭐ Available Achievements\x1b[0m\n' +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```\n' +
       `${tierAchievements.length} achievement(s) available in your current tier.`
@@ -424,11 +496,13 @@ export function createAchievementSelectionEmbed(game, tierAchievements) {
 export function createVerificationEmbed(achievement, game, user) {
   return new EmbedBuilder()
     .setColor(COLORS.PURPLE)
-    .setTitle(`**𝐕𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧 𝐑𝐞𝐪𝐮𝐢𝐫𝐞𝐝**`)
+    .setTitle(`**𝓥𝓮𝓻𝓲𝓯𝓲𝓬𝓪𝓽𝓲𝓸𝓷 𝓡𝓮𝓺𝓾𝓲𝓻𝓮𝓭**`)
     .setDescription(
       '```ansi\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
+      '\n' +
       `\x1b[1;37m${achievement.name}\x1b[0m\n` +
+      '\n' +
       '\x1b[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n' +
       '```\n' +
       `**User:** ${user.username}\n` +
